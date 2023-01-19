@@ -8,8 +8,8 @@ const { response } = require('express');
 var spotifyApi = new SpotifyWebApi({
     clientId: '04893084a5104966975a4ee50f3a5933',
     clientSecret: '14e8d19288e1429bb5fa6dab9b9b8fcd',
-    // redirectUri: 'https://pokemonify.onrender.com/callback'
-    redirectUri: 'http://localhost:8888/callback'
+    redirectUri: 'https://pokemonify.onrender.com/callback'
+    // redirectUri: 'http://localhost:8888/callback'
   });
 
 // 'http://localhost:8888/callback'
