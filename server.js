@@ -195,9 +195,9 @@ app.get('/result', async (req, res) => {
     //poke link gets artwork
     //species link does not work with shaymin-sky or vulpix-alola
 
-    if (name === "shaymin-sky") {
+    if (name.toLowerCase() === "shaymin-sky") {
       species_name = "shaymin";
-    } else if (name === "vulpix-alola") {
+    } else if (name.toLowerCase() === "vulpix-alola") {
       species_name = "vulpix";
       official_name = "Alolan Vulpix";
     }
