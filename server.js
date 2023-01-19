@@ -5,11 +5,13 @@ const path = require("path");
 const fetch = require("cross-fetch");
 const { response } = require('express');
 
+require("dotenv").config({ path: path.resolve(__dirname, 'credentials/.env') });
+
 var spotifyApi = new SpotifyWebApi({
-    clientId: '04893084a5104966975a4ee50f3a5933',
-    clientSecret: '14e8d19288e1429bb5fa6dab9b9b8fcd',
-    redirectUri: 'https://pokemonify.onrender.com/callback'
-    // redirectUri: 'http://localhost:8888/callback'
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    // redirectUri: 'https://pokemonify.onrender.com/callback'
+    redirectUri: 'http://localhost:8888/callback'
   });
 
 // 'http://localhost:8888/callback'
