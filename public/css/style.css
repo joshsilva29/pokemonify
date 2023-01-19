@@ -26,6 +26,15 @@ body {
   */
   background: rgb(59,76,202);
   background: radial-gradient(circle, rgba(59,76,202,1) 0%, rgba(109,158,217,1) 100%);
+  background-repeat: no-repeat; 
+  background-position: center;
+  background-attachment: fixed;       
+  webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height:100%;
+  width:100%;
 }
 
 meter {
@@ -80,6 +89,10 @@ meter {
   font-size: 1.9rem;
 }
 
+#login-credits {
+  font-size: 1.7rem;
+}
+
 #pokedex-background {
   margin: 3rem;
   background: rgb(37,113,156);
@@ -123,3 +136,18 @@ meter {
 #name {
   font-size: 4rem;
 }
+
+@media screen and (min-width: 961px) and (max-width: 1167px) {
+  a {
+    text-decoration: underline;
+  }
+
+  #title {
+    font-size: 8rem;
+    margin-top: 7rem;
+  }
+  #title-caption {
+    font-size: 3rem;
+  }
+}
+
