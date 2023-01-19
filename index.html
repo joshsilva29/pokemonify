@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <title>Pokémonify</title>
+  <script type="text/javascript" src="/index.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mulish&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <script src="/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/code/electron-browser/workbench/workbench.htmlhttps://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+
+<body>
+    <div class="container">
+      <div id="login">
+        <h1 id="title">POKÉMONIFY</h1>
+        <h2 id="title_caption">What Pokémon are you based on your listening history?</h2>
+        <a id="login_button" href="/login" class="btn btn-primary">Spotify Login</a>
+      </div>
+      <div id="loading" display="none">
+        <img id="load_gif">
+      </div>
+      <div id="loggedin" display="none">
+        <div id="content">
+          <div id="left-content">
+            <img id="poke-photo" src="" alt="yasssss">
+          </div>
+          <div id="right-content">
+            <h2 id="poke-name" style="color: white"></h2>
+            <h4 id="flavor" style="color: white"></h2>
+
+            <div id="bottom-right-content">
+              <div id="stat-text">
+                <h4 id="mood-title" style="color: white" class="stat-title">Mood</h4>
+                <h4 id="energy-title" style="color: white" class="stat-title">Energy</h4>
+                <h4 id="acoustic-title" style="color: white" class="stat-title">Acousticness</h4>
+              </div>
+              <div id="stat-bar">
+                <div id="mood-stat" class="stat">
+                  <meter id="mood" min="0" low="0.4" high="1" max="2" optimum="1.5" value="0"></meter>
+                </div>
+                <div id="energy-stat" class="stat">
+                  <meter id="energy" min="0" low="0.6" high="1.5" max="3" optimum="2.5" value="0"></meter>
+                </div>
+                <div id="acoustic-stat" class="stat">
+                  <meter id="acoustic" min="0" low="0.2" high="0.5" max="1" optimum="0.7" value="0"></meter>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="info">
+        <h4 id="login-credits" >Developed by Joshua Silva</h4>
+      </div>
+    </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script type="text/javascript">
+    var url = window.location.href;
+
+    /* 
+    This first part is checking if the current page is the page
+    generated AFTER the callback function. If it isn't, no code
+    executes.
+    */
+
+    if (url.includes("logged")) {
+      $('#login').hide();
+      $('#loggedin').hide();
+      $('#load_gif').src = "/images/pokeball_load.gif";
+      $('#loading').show();
+
+      async function getValues() {
+        const values_response = await fetch('/json_fetch');
+        const values_json = await values_response.json();
+        
+        const species_call = await fetch(values_json.species);
+        const species = await species_call.json();
+        const poke_call = await fetch(values_json.poke);
+        const poke = await poke_call.json();
+
+        var flavor = "";
+        var artwork = poke.sprites.other["official-artwork"].front_default;
+
+        if(values_json.name === "vulpix") {
+          flavor += "In hot weather, this Pokémon makes ice shards with its six tails and sprays them around to cool itself off.";
+        } else {
+          //get most recent english flavor text
+          for(var i = species.flavor_text_entries.length - 1; i >= 0; i--) {
+            if(species.flavor_text_entries[i].language.name === "en") {
+              flavor += species.flavor_text_entries[i].flavor_text;
+              break;
+            }
+          }
+        }
+
+        values_json.flavor = flavor;
+        values_json.artwork = artwork;
+
+        return values_json;
+      }
+
+      getValues().then(
+        function(result) {
+          var poke_name = result.name;
+          var flavor_text = result.flavor;
+          var artwork_link = result.artwork;
+          var poke_name_str = "You are a " + poke_name + "!";
+
+          if(poke_name.charAt(0) === "A" || poke_name.charAt(0) === "E" || poke_name.charAt(0) === "I" 
+            || poke_name.charAt(0) === "O" || poke_name.charAt(0) === "U") {
+              poke_name_str = "You are an " + poke_name + "!";
+            }
+
+          document.getElementById("poke-photo").src = artwork_link;
+          document.getElementById("poke-photo").alt = "this is a " + poke_name;
+          document.getElementById("poke-name").innerHTML = poke_name_str;
+          document.getElementById("flavor").innerHTML = flavor_text;
+          document.getElementById("mood").value = result.mood;
+          document.getElementById("energy").value = result.energy;
+          document.getElementById("acoustic").value = result.acoustic;
+        },
+        function(error) {
+          document.getElementById("poke-name").innerHTML = "aint no way???? " + error;
+        }
+      );
+
+      setTimeout(function () {
+        $('#loading').hide();
+        $('#loggedin').show();
+      }, 2000);
+
+    } else {
+      $('#login').show();
+      $('#loading').hide();
+      $('#loggedin').hide();
+    }
+</script>
+
+</html>

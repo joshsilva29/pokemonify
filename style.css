@@ -1,0 +1,213 @@
+@font-face {
+    font-family: "Circular-Bold";
+    src: url("/fonts/circular-bold.woff2") format("woff2");
+  }
+
+@font-face {
+    font-family: "Circular-Book";
+    src: url("/fonts/circular-book.woff2") format("woff2");
+}
+
+* {
+    font-family: 'Circular-Bold', Arial, Helvetica, sans-serif;
+}
+
+html {
+    height: auto;
+    min-height: 100%;
+    min-width: 100%;
+    display: flex;
+}
+
+body {
+    background-image: linear-gradient(181deg, rgb(2, 0, 97) 15%, rgb(97, 149, 219) 158.5%);
+    margin: auto;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.info {
+    color: white;
+    text-align: center;
+    font-size: calc(12px + 1.5vw);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: auto;
+    top: 0; bottom: 0; left: 0; right: 0;
+    height: 100%;
+    padding: 0px;
+    overflow: visible;
+}
+
+#title {
+    font-weight: 800;
+    color: #1DB954;
+    text-align: center;
+    font-size: calc(12px + 9vw);
+    margin-right: auto;
+    margin-left: auto;
+    display: inline-block;
+}
+
+#load_gif {
+    margin: 0 auto;
+}
+
+#title_caption {
+    text-align: center;
+    color: #1DB954;
+    margin-bottom: 1.4em;
+    font-family: 'Circular-Book', Arial, Helvetica, sans-serif;
+    font-size: calc(12px + 1.5vw);
+}
+
+.container .info {
+    margin-bottom: 30px;
+}
+
+.container #login {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.container #loggedin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.container #content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    margin-right: auto;
+    margin-left: auto; 
+}
+
+.container #content #left-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    width: 175%;
+}
+
+.container #content #right-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.container #content #poke-name {
+    margin: 20px;
+    text-align: center;
+}
+
+.container #content #right-content #flavor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border-style: outset;
+    border-color: rgb(97, 149, 219, .6);
+    border-radius: 40px;
+    border-width: 9px;
+    background-color: rgb(97, 149, 219, .6);
+    font-family: 'Circular-Book', Arial, Helvetica, sans-serif;
+    padding: 20px;
+}
+
+.container #content #right-content #bottom-right-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.container #content #right-content #bottom-right-content #stat-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.container #content #right-content #bottom-right-content #stat-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-left: 10px;
+    line-height: 40px;
+    margin-bottom: 10px;
+}
+
+img #poke-photo {
+    width: fit-content;
+}
+
+/*meter */
+meter {width: 300px;}
+meter::-webkit-meter-bar {
+    border: none;
+    background: rgb(97, 149, 219, .6);
+  }
+meter::-webkit-meter-optimum-value {background: green;}
+meter::-webkit-meter-suboptimum-value{background:orange;}
+meter::-webkit-meter-even-less-good-value{background:red;}
+
+@media screen and (orientation: landscape) {
+    #login_button {
+        width: 30vw;
+        background-color: #1DB954;
+        border-radius: 50px;
+        font-size: 3vmax;
+        font-weight: 600;
+        padding: 0.2vmax 1vmax;
+        text-align: center;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 1em;
+    }
+}
+
+@media screen and (orientation: portrait) {
+    #login_button {
+        width: 50vw;
+        background-color: #1DB954;
+        border-radius: 50px;
+        font-size: 2vmax;
+        font-weight: 600;
+        padding: 0.2vmax 1vmax;
+        text-align: center;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 1em;
+    }
+    .container {
+        flex-direction: column;
+
+    }
+    .container #content {
+        flex-direction: column;
+    }
+}
+

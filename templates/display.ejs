@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+    <head>
+        <link href="/css/style.css" rel="stylesheet" type="text/css">
+        <link rel="preload" href="<%= artwork %>" as="image">
+    </head>
+    <body>
+        <div id="pokedex-background" class="fade-in">
+            <br>
+            <div id="left-pokedex">
+                <div>  
+                    <br>
+                    <div>You are <%= prename %></div>
+                    <br>
+                    <div id="name"><%= name %></div>
+                    <br>
+                    <div id="dex-num">No. <%= dex_num %></div>
+                    <br>
+                    <div id="type"><%= type %></div>
+                </div>
+                <div id="flavor-div">
+                    <div id="flavor"><%= flavor %></div>
+                </div>
+            </div>
+            <div id="right-pokedex">
+                <img id="my_img" src="<%= artwork %>" alt="">
+                <div id="stat-bar">
+                    <div id="mood-stat" class="stat">
+                      <h3 class="id-label">Mood</h3>
+                      <meter id="mood" min="0" low="0.4" high="1" max="2" optimum="1.5" value="<%= mood %>"></meter>
+                    </div>
+                    <div id="energy-stat" class="stat">
+                      <h3 class="id-label">Energy</h3>
+                      <meter id="energy" min="0" low="0.6" high="1.5" max="3" optimum="2.5" value="<%= energy %>"></meter>
+                    </div>
+                    <div id="acoustic-stat" class="stat">
+                      <h3 class="id-label">Acoustic</h3>
+                      <meter id="acoustic" min="0" low="0.2" high="0.5" max="1" optimum="0.7" value="<%= acoustic %>"></meter>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
