@@ -182,6 +182,7 @@ app.get('/result', async (req, res) => {
     let type = get_type(avg_mood, avg_energy, avg_acoustic);
     let name = get_pokemon(avg_energy, avg_mood, type);
 
+    let type_color = type;
     type = type.toUpperCase();
 
     let prename = "a";
@@ -239,6 +240,7 @@ app.get('/result', async (req, res) => {
       "flavor": flavor,
       "artwork": artwork,
       "type" : type,
+      "type_color": type_color,
       "dex_num": dex_num,
       "prename": prename
     };

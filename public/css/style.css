@@ -33,8 +33,13 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  height:100%;
-  width:100%;
+  height: 100%;
+  width: 80%;
+  margin: auto;
+}
+
+img {
+  margin-left: 2rem;
 }
 
 meter {
@@ -52,7 +57,14 @@ meter {
 }
 
 .stat {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+}
+
+.title-display {
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 2rem;
+  font-size: 4rem;
 }
 
 #container-home {
@@ -64,18 +76,19 @@ meter {
 }
 
 #flavor-div {
-  margin-top: 6rem;
+  margin-top: 2rem;
 }
 
 #left-pokedex {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  margin: auto;
 }
 
 #login-button {
   background-color: white;
   border-radius: 1.4rem;
-  font-weight: 300;
+  font-weight: 600;
   color: #3B4CCA;
   font-size: 2.2rem;
   padding-top: 1rem;
@@ -101,7 +114,8 @@ meter {
   border-bottom: 2rem solid white;
   border-radius: 2rem;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  flex-wrap: wrap;
   padding-left: 3.5rem;
   padding-right: 3.5rem;
   padding-top: 1.5rem;
@@ -111,43 +125,215 @@ meter {
 #right-pokedex {
   display: flex;
   flex-direction: row;
+  margin-left: 3.8rem;
 }
 
 #stat-bar {
   width: 8rem;
-  height: 8rem;
+  height: 11rem;
+  letter-spacing: 0.08rem;
   margin: auto;
+  margin-top: 1.8rem;
+  border-radius: 1rem;
+  padding-left: 1.1rem;
+  padding-right: 0rem;
+  padding-top: 1rem;
+  padding-bottom: 1.4rem;
+}
+
+#stats-legend {
+  font-size: 1.4rem;
 }
 
 #title {
   font-size: 10rem;
   font-weight: 500;
   margin-bottom: 0rem;
+  margin-top: 6rem;
 }
 
 #type {
   font-size: 1.6rem;
+  font-weight: 600;
+  border: solid;
+  border-radius: 1rem;
+  letter-spacing: 0.3rem;
+  text-align: center;
 }
 
 #title-caption {
   font-size: 2rem;
 }
 
+#upper-left {
+  display: flex;
+  flex-direction: row;
+}
+
 #name {
   font-size: 4rem;
 }
 
-@media screen and (min-width: 961px) and (max-width: 1167px) {
+#you-are {
+  font-size: 2rem;
+}
+
+/* These are the color types */
+
+.bug {
+  background: rgb(135,149,13);
+  background: radial-gradient(circle, rgba(135,149,13,1) 0%, rgba(169,185,30,1) 100%);
+}
+
+.dark {
+  background: rgb(59,45,34);
+  background: radial-gradient(circle, rgba(59,45,34,1) 0%, rgba(81,60,47,1) 100%);
+}
+
+.dragon {
+  background: rgb(78,58,163);
+  background: radial-gradient(circle, rgba(78,58,163,1) 0%, rgba(118,95,224,1) 100%);
+}
+
+.electric {
+  background: rgb(231,147,2);
+  background: radial-gradient(circle, rgba(231,147,2,1) 0%, rgba(252,192,33,1) 100%);
+}
+
+.fairy {
+  background: rgb(225,143,225);
+  background: radial-gradient(circle, rgba(225,143,225,1) 0%, rgba(246,179,246,1) 100%);
+}
+
+.fighting {
+  background: rgb(95,35,17);
+  background: radial-gradient(circle, rgba(95,35,17,1) 0%, rgba(130,52,29,1) 100%);
+}
+
+.fire {
+  background: rgb(199,33,0);
+  background: radial-gradient(circle, rgba(199,33,0,1) 0%, rgba(239,66,13,1) 100%);
+}
+
+.flying {
+  background: rgb(92,114,212);
+  background: radial-gradient(circle, rgba(92,114,212,1) 0%, rgba(152,169,244,1) 100%);
+}
+
+.ghost {
+  background: rgb(69,69,146);
+  background: radial-gradient(circle, rgba(69,69,146,1) 0%, rgba(95,95,177,1) 100%);
+}
+
+.grass {
+  background: rgb(45,132,0);
+  background: radial-gradient(circle, rgba(45,132,0,1) 0%, rgba(105,189,46,1) 100%);
+}
+
+.ground {
+  background: rgb(179,145,52);
+  background: radial-gradient(circle, rgba(179,145,52,1) 0%, rgba(215,182,95,1) 100%);
+}
+
+.ice {
+  background: rgb(109,211,245);
+  background: radial-gradient(circle, rgba(109,211,245,1) 0%, rgba(165,231,253,1) 100%);
+}
+
+.normal {
+  background: rgb(173,165,148);
+  background: radial-gradient(circle, rgba(173,165,148,1) 0%, rgba(199,194,187,1) 100%);
+}
+
+.poison {
+  background: rgb(107,35,109);
+  background: radial-gradient(circle, rgba(107,35,109,1) 0%, rgba(146,68,147,1) 100%);
+}
+
+.psychic {
+  background: rgb(221,51,104);
+  background: radial-gradient(circle, rgba(221,51,104,1) 0%, rgba(237,72,130,1) 100%);
+}
+
+.rock {
+  background: rgb(157,134,61);
+  background: radial-gradient(circle, rgba(157,134,61,1) 0%, rgba(187,164,88,1) 100%);
+}
+
+.steel {
+  background: rgb(142,142,159);
+  background: radial-gradient(circle, rgba(142,142,159,1) 0%, rgba(183,183,197,1) 100%);
+}
+
+.water {
+  background: rgb(12,103,194);
+  background: radial-gradient(circle, rgba(12,103,194,1) 0%, rgba(55,153,252,1) 100%); 
+}
+
+/* These are the media queries */
+
+@media screen and (min-width: 200px) and (max-width: 1167px) {
   a {
     text-decoration: underline;
   }
 
+  body {
+    width: 100%
+  }
+
+  #login-button {
+    font-size: 2.7rem;
+  }
+
+  #login-credits {
+    font-size: 2.7rem;
+  }
+
   #title {
     font-size: 8rem;
-    margin-top: 7rem;
+    margin-top: 6rem;
   }
+
   #title-caption {
     font-size: 3rem;
+  }
+}
+
+@media screen and (max-width: 1428px) {
+  meter {
+    width: 96%;
+    height: 30px;
+    margin-bottom: 0.5rem;
+  }
+
+  .id-label {
+    font-size: 2rem;
+  }
+
+  #left-pokedex {
+    flex-direction: column;
+  }
+
+  #right-pokedex {
+    margin-left: 0;
+    margin-bottom: 2rem;
+  }
+
+  #stat-bar {
+    border: solid 0.3rem rgba(109,211,245,0.6);
+    height: 21rem;
+    padding-left: 1.5rem;
+    padding-right: 0.4rem;
+    padding-top: 2rem;
+    width: 40rem;
+  }
+
+  #stats-legend {
+    font-size: 2.5rem;
+  }
+
+  #upper-left {
+    margin-left: 4rem;
   }
 }
 
