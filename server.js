@@ -40,9 +40,9 @@ var generateRandomString = function(length) {
   return text;
 };
 
-var scopes = ['user-read-private', 'user-read-email', 'user-top-read'];
-var state = generateRandomString(16);
-var url = spotifyApi.createAuthorizeURL(scopes, state);
+let scopes = ['user-read-private', 'user-read-email', 'user-top-read'];
+let state = generateRandomString(16);
+let url = spotifyApi.createAuthorizeURL(scopes, state);
 
 // console.log(url);
 
@@ -56,14 +56,31 @@ app.get('/callback', async (req, res) => {
 
     let code = req.query.code || null;
     let code_str = "code: " + code + "\n";
+    //variables is sent when there is an error
+    let variables = {
+      "mood" : 0,
+      "energy" : 0,
+      "acoustic" : 0,
+      "name": "BAD EGG",
+      "flavor": "There has been an error associated with logging in. Please wait a couple of minnutes and try again.",
+      "artwork": "https://www.models-resource.com/resources/big_icons/28/27385.png?updated=1542515866",
+      "type" : "FAIRY",
+      "type_color": "fairy",
+      "dex_num": 000,
+      "prename": "a"
+    };
+
+    
     // console.log(code_str);
 
-    let data = await spotifyApi.authorizationCodeGrant(code);
-
-    // Set the access token on the API object to use it in later calls
-    spotifyApi.setAccessToken(data.body['access_token']);
-    spotifyApi.setRefreshToken(data.body['refresh_token']);
-
+    try {
+      let data = await spotifyApi.authorizationCodeGrant(code);
+      // Set the access token on the API object to use it in later calls
+      spotifyApi.setAccessToken(data.body['access_token']);
+      spotifyApi.setRefreshToken(data.body['refresh_token']);
+    } catch (e) {
+      res.render("display", variables);
+    }
     res.redirect('/result');
   } 
 );
@@ -72,6 +89,20 @@ app.get('/callback', async (req, res) => {
 app.get('/result', async (req, res) => {
     //calculations to determine pokemon
     // console.log("access token in function: " + spotifyApi.getAccessToken());
+
+    //variables_error is sent when there is an error
+    let variables_error = {
+      "mood" : 0,
+      "energy" : 0,
+      "acoustic" : 0,
+      "name": "BAD EGG",
+      "flavor": "There has been an error associated with logging in. Please wait a couple of minnutes and try again.",
+      "artwork": "https://www.models-resource.com/resources/big_icons/28/27385.png?updated=1542515866",
+      "type" : "FAIRY",
+      "type_color": "fairy",
+      "dex_num": 000,
+      "prename": "a"
+    };
 
     let short_response;
     let medium_response;
@@ -82,7 +113,7 @@ app.get('/result', async (req, res) => {
       medium_response = await spotifyApi.getMyTopTracks({time_range : "medium_term"});
       long_response = await spotifyApi.getMyTopTracks({time_range : "long_term"});
     } catch (e) {
-      console.error(e);
+      res.render("display", variables_error);
     }
 
     // console.log("successful fetch for response");
@@ -108,9 +139,17 @@ app.get('/result', async (req, res) => {
       long_arr.push(song["id"]);
     }
 
-    const short_features_response = await spotifyApi.getAudioFeaturesForTracks(short_arr);
-    const medium_features_response = await spotifyApi.getAudioFeaturesForTracks(medium_arr);
-    const long_features_response = await spotifyApi.getAudioFeaturesForTracks(long_arr);
+    let short_features_response;
+    let medium_features_response;
+    let long_features_response;
+
+    try {
+      short_features_response = await spotifyApi.getAudioFeaturesForTracks(short_arr);
+      medium_features_response = await spotifyApi.getAudioFeaturesForTracks(medium_arr);
+      long_features_response = await spotifyApi.getAudioFeaturesForTracks(long_arr);
+    } catch (e) {
+      res.render("display", variables_error);
+    }
 
     let short_mood = 0;
     let medium_mood = 0;
@@ -211,10 +250,19 @@ app.get('/result', async (req, res) => {
     // console.log(species_link);
     // console.log(poke_link);
 
-    const species_call = await fetch(species_link);
-    const species = await species_call.json();
-    const poke_call = await fetch(poke_link);
-    const poke = await poke_call.json();
+    let species_call;
+    let species;
+    let poke_call;
+    let poke;
+
+    try {
+      species_call = await fetch(species_link);
+      species = await species_call.json();
+      poke_call = await fetch(poke_link);
+      poke = await poke_call.json();
+    } catch (e) {
+      res.render("display", variables_error);
+    }
 
     let flavor = "";
     let artwork = poke.sprites.other["official-artwork"].front_default;
