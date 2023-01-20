@@ -5,6 +5,29 @@
   100% { opacity: 1; }
 }
 
+/* CREDIT TO IAN FORREST FOR GRADIENT https://www.gradient-animator.com/ */
+
+@-webkit-keyframes bg-gradient {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@-moz-keyframes bg-gradient {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@-o-keyframes bg-gradient {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@keyframes bg-gradient {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
 * {
     color: white;
     font-family: 'Figtree', sans-serif;
@@ -24,7 +47,7 @@ body {
     background: rgb(59,76,202);
     background: radial-gradient(circle, rgba(59,76,202,1) 0%, rgba(148,187,233,1) 100%);  
   */
-  background: rgb(59,76,202);
+  /* background: rgb(59,76,202);
   background: radial-gradient(circle, rgba(59,76,202,1) 0%, rgba(109,158,217,1) 100%);
   background-repeat: no-repeat; 
   background-position: center;
@@ -32,7 +55,14 @@ body {
   webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-  background-size: cover;
+  background-size: cover; */
+  background: rgb(59,76,202);
+  background: linear-gradient(270deg, #3b4cca, #6d9ed9, #765fe0);
+  background-size: 600% 600%;
+  -webkit-animation: bg-gradient 42s ease infinite;
+  -moz-animation: bg-gradient 42s ease infinite;
+  -o-animation: bg-gradient 42s ease infinite;
+  animation: bg-gradient 42s ease infinite;
   height: 100%;
   width: 80%;
   margin: auto;

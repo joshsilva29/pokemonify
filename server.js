@@ -10,8 +10,8 @@ require("dotenv").config({ path: path.resolve(__dirname, 'credentials/.env') });
 var spotifyApi = new SpotifyWebApi({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    redirectUri: 'https://pokemonify.onrender.com/callback'
-    // redirectUri: 'http://localhost:8888/callback'
+    // redirectUri: 'https://pokemonify.onrender.com/callback'
+    redirectUri: 'http://localhost:8888/callback'
   });
 
 // 'http://localhost:8888/callback'
@@ -61,13 +61,13 @@ app.get('/callback', async (req, res) => {
       "mood" : 0,
       "energy" : 0,
       "acoustic" : 0,
-      "name": "BAD EGG",
-      "flavor": "There has been an error associated with logging in. Please wait a couple of minnutes and try again.",
+      "name": "unfortunately not assigned a pokémon :(",
+      "flavor": "There has been an error associated with logging in. Please wait a couple of minutes and try again.",
       "artwork": "https://www.models-resource.com/resources/big_icons/28/27385.png?updated=1542515866",
-      "type" : "FAIRY",
-      "type_color": "fairy",
+      "type" : "NORMAL",
+      "type_color": "normal",
       "dex_num": 000,
-      "prename": "a"
+      "prename": ""
     };
 
     
@@ -95,13 +95,13 @@ app.get('/result', async (req, res) => {
       "mood" : 0,
       "energy" : 0,
       "acoustic" : 0,
-      "name": "BAD EGG",
+      "name": "unfortunately not assigned a pokémon :(",
       "flavor": "There has been an error associated with logging in. Please wait a couple of minnutes and try again.",
       "artwork": "https://www.models-resource.com/resources/big_icons/28/27385.png?updated=1542515866",
-      "type" : "FAIRY",
-      "type_color": "fairy",
+      "type" : "NORMAL",
+      "type_color": "normal",
       "dex_num": 000,
-      "prename": "a"
+      "prename": ""
     };
 
     let short_response;
@@ -109,9 +109,9 @@ app.get('/result', async (req, res) => {
     let long_response;
 
     try {
-      short_response = await spotifyApi.getMyTopTracks({time_range : "short_term"});
-      medium_response = await spotifyApi.getMyTopTracks({time_range : "medium_term"});
-      long_response = await spotifyApi.getMyTopTracks({time_range : "long_term"});
+      short_response = await spotifyApi.getMyTopTracks({time_range : "short_term", limit: 50});
+      medium_response = await spotifyApi.getMyTopTracks({time_range : "medium_term", limit: 50});
+      long_response = await spotifyApi.getMyTopTracks({time_range : "long_term", limit: 40});
     } catch (e) {
       res.render("display", variables_error);
     }
@@ -126,6 +126,8 @@ app.get('/result', async (req, res) => {
     let short_tracks = short_response.body.items;
     let medium_tracks = medium_response.body.items;
     let long_tracks = long_response.body.items;
+
+    console.log("length of long tracks: " + long_tracks.length);
 
     for(const song of short_tracks) {
       short_arr.push(song["id"]);
