@@ -56,21 +56,23 @@ app.get('/callback', async (req, res) => {
 
     let code = req.query.code || null;
     let code_str = "code: " + code + "\n";
+    let err = false;
     //variables is sent when there is an error
+    let err_string = "When it encounters another Ditto, it will move\nfaster than normal to duplicate that opponent exactly.";
+    err_string += "\nUnfortunately, this Pokémon only appears if there is an error!\nPlease wait a couple minutes before reloading ths site."
     let variables = {
       "mood" : 0,
       "energy" : 0,
       "acoustic" : 0,
-      "name": "unfortunately not assigned a pokémon :(",
-      "flavor": "There has been an error associated with logging in. Please wait a couple of minutes and try again.",
-      "artwork": "https://www.models-resource.com/resources/big_icons/28/27385.png?updated=1542515866",
+      "name": "Ditto",
+      "flavor": err_string,
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/132.png",
       "type" : "NORMAL",
       "type_color": "normal",
-      "dex_num": 000,
-      "prename": ""
+      "dex_num": 132,
+      "prename": "a"
     };
 
-    
     // console.log(code_str);
 
     try {
@@ -79,9 +81,12 @@ app.get('/callback', async (req, res) => {
       spotifyApi.setAccessToken(data.body['access_token']);
       spotifyApi.setRefreshToken(data.body['refresh_token']);
     } catch (e) {
+      err = true
       res.render("display", variables);
     }
-    res.redirect('/result');
+    if(!err) {
+      res.redirect('/result');
+    }
   } 
 );
 
@@ -91,43 +96,54 @@ app.get('/result', async (req, res) => {
     // console.log("access token in function: " + spotifyApi.getAccessToken());
 
     //variables_error is sent when there is an error
+    let err_string = "Once it becomes an adult, it has a tendency to let\nits comrades plant footprints on its back.\n";
+    err_string += "\nUnfortunately, this Pokémon only appears if there is an error!\nPlease wait a couple minutes before reloading this site."
     let variables_error = {
       "mood" : 0,
       "energy" : 0,
       "acoustic" : 0,
-      "name": "unfortunately not assigned a pokémon :(",
-      "flavor": "There has been an error associated with logging in. Please wait a couple of minnutes and try again.",
-      "artwork": "https://www.models-resource.com/resources/big_icons/28/27385.png?updated=1542515866",
+      "name": "Smeargle",
+      "flavor": err_string,
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/235.png",
       "type" : "NORMAL",
       "type_color": "normal",
-      "dex_num": 000,
-      "prename": ""
+      "dex_num": 235,
+      "prename": "a"
     };
+
+    let error = false;
 
     let short_response;
     let medium_response;
     let long_response;
 
     try {
-      short_response = await spotifyApi.getMyTopTracks({time_range : "short_term", limit: 50});
+      short_response = await spotifyApi.getMyTopTracks({time_range : "short_term", limit: 40});
       medium_response = await spotifyApi.getMyTopTracks({time_range : "medium_term", limit: 50});
       long_response = await spotifyApi.getMyTopTracks({time_range : "long_term", limit: 40});
     } catch (e) {
-      res.render("display", variables_error);
+      console.log("ERROR GETTING TRACKS");
+      console.log(e);
+      error = true;
     }
-
-    // console.log("successful fetch for response");
-    // console.log(short_response);
 
     let short_arr = [];
     let medium_arr = [];
     let long_arr = [];
+    let short_tracks = [];
+    let medium_tracks = [];
+    let long_tracks = [];
 
-    let short_tracks = short_response.body.items;
-    let medium_tracks = medium_response.body.items;
-    let long_tracks = long_response.body.items;
-
-    console.log("length of long tracks: " + long_tracks.length);
+    if(short_response) {
+      short_tracks = short_response.body.items;
+      console.log(short_tracks)
+    }
+    if (medium_response) {
+      medium_tracks = medium_response.body.items;
+    }
+    if (long_response) {
+      long_tracks = long_response.body.items;
+    }
 
     for(const song of short_tracks) {
       short_arr.push(song["id"]);
@@ -146,11 +162,22 @@ app.get('/result', async (req, res) => {
     let long_features_response;
 
     try {
-      short_features_response = await spotifyApi.getAudioFeaturesForTracks(short_arr);
-      medium_features_response = await spotifyApi.getAudioFeaturesForTracks(medium_arr);
-      long_features_response = await spotifyApi.getAudioFeaturesForTracks(long_arr);
+      if(short_arr.length) {
+        console.log("short: " + short_arr.length);
+        short_features_response = await spotifyApi.getAudioFeaturesForTracks(short_arr);
+      }
+      if(medium_arr.length) {
+        console.log("mediu: " + medium_arr.length);
+        medium_features_response = await spotifyApi.getAudioFeaturesForTracks(medium_arr);
+      }
+      if(long_arr.length) {
+        console.log("large: " + long_arr.length);
+        long_features_response = await spotifyApi.getAudioFeaturesForTracks(long_arr);
+      }
     } catch (e) {
-      res.render("display", variables_error);
+      console.log("ERROR FETCHING AUDIO FEATURES");
+      console.log(e);
+      error = true;
     }
 
     let short_mood = 0;
@@ -165,66 +192,78 @@ app.get('/result', async (req, res) => {
     let medium_acoustic = 0;
     let long_acoustic = 0;
 
-    for (const song of short_features_response.body.audio_features) {
-      short_mood += song["valence"] + song["mode"];
-      short_energy += song["energy"] + song["danceability"];
-      short_acoustic += song["acousticness"];
-      if (song["tempo"] < 108) {
-        short_energy += song["tempo"] / 108;
-      } else if (song["tempo"] >= 108) {
-        short_energy += 1;
+    if(short_arr.length) {
+      for (const song of short_features_response.body.audio_features) {
+        short_mood += song["valence"] + song["mode"];
+        short_energy += song["energy"] + song["danceability"];
+        short_acoustic += song["acousticness"];
+        if (song["tempo"] < 108) {
+          short_energy += song["tempo"] / 108;
+        } else if (song["tempo"] >= 108) {
+          short_energy += 1;
+        }
       }
+  
+      short_mood /= short_features_response.body.audio_features.length;
+      short_energy /= short_features_response.body.audio_features.length;
+      short_acoustic /= short_features_response.body.audio_features.length;
     }
 
-    // console.log("did we make it past the first short calculations");
-
-    short_mood /= short_features_response.body.audio_features.length;
-    short_energy /= short_features_response.body.audio_features.length;
-    short_acoustic /= short_features_response.body.audio_features.length;
-
-    for (const song of medium_features_response.body.audio_features) {
-      medium_mood += song["valence"] + song["mode"];
-      medium_energy += song["energy"] + song["danceability"];
-      medium_acoustic += song["acousticness"];
-      if (song["tempo"] < 108) {
-        medium_energy += song["tempo"] / 108;
-      } else if (song["tempo"] >= 108) {
-        medium_energy += 1;
+    if(medium_arr.length) {
+      for (const song of medium_features_response.body.audio_features) {
+        medium_mood += song["valence"] + song["mode"];
+        medium_energy += song["energy"] + song["danceability"];
+        medium_acoustic += song["acousticness"];
+        if (song["tempo"] < 108) {
+          medium_energy += song["tempo"] / 108;
+        } else if (song["tempo"] >= 108) {
+          medium_energy += 1;
+        }
       }
+  
+      medium_mood /= medium_features_response.body.audio_features.length;
+      medium_energy /= medium_features_response.body.audio_features.length;
+      medium_acoustic /= medium_features_response.body.audio_features.length;
     }
 
-    medium_mood /= medium_features_response.body.audio_features.length;
-    medium_energy /= medium_features_response.body.audio_features.length;
-    medium_acoustic /= medium_features_response.body.audio_features.length;
-
-    for (const song of long_features_response.body.audio_features) {
-      long_mood += song["valence"] + song["mode"];
-      long_energy += song["energy"] + song["danceability"];
-      long_acoustic += song["acousticness"];
-      if (song["tempo"] < 108) {
-        long_energy += song["tempo"] / 108;
-      } else if (song["tempo"] > 108) {
-        long_energy += 1;
+    if(long_arr.length) {
+      for (const song of long_features_response.body.audio_features) {
+        long_mood += song["valence"] + song["mode"];
+        long_energy += song["energy"] + song["danceability"];
+        long_acoustic += song["acousticness"];
+        if (song["tempo"] < 108) {
+          long_energy += song["tempo"] / 108;
+        } else if (song["tempo"] > 108) {
+          long_energy += 1;
+        }
       }
+  
+      long_mood /= long_features_response.body.audio_features.length;
+      long_energy /= long_features_response.body.audio_features.length;
+      long_acoustic /= long_features_response.body.audio_features.length;
     }
-
-    long_mood /= long_features_response.body.audio_features.length;
-    long_energy /= long_features_response.body.audio_features.length;
-    long_acoustic /= long_features_response.body.audio_features.length;
 
     // console.log("smth wrong here at avg");
 
     let avg_mood = (short_mood + medium_mood + long_mood) / 3;
     let avg_energy = (short_energy + medium_energy + long_energy) / 3;
     let avg_acoustic = (short_acoustic + medium_acoustic + long_acoustic) / 3;
+    let type = "";
+    let name = "";
+    let type_color = "";
+
+    if((avg_mood + avg_energy + avg_acoustic) == 0) {
+      type = "normal"
+      name = "ditto"
+      type_color = "DITTO";
+    } else {
+      type = get_type(avg_mood, avg_energy, avg_acoustic);
+      name = get_pokemon(avg_energy, avg_mood, type);
+      type_color = type;
+      type = type.toUpperCase();
+    }
 
     // console.log("here at least");
-
-    let type = get_type(avg_mood, avg_energy, avg_acoustic);
-    let name = get_pokemon(avg_energy, avg_mood, type);
-
-    let type_color = type;
-    type = type.toUpperCase();
 
     let prename = "a";
 
@@ -256,6 +295,11 @@ app.get('/result', async (req, res) => {
     let species;
     let poke_call;
     let poke;
+    let flavor = "";
+    let artwork = "";
+    let dex_num = -1;
+
+    console.log("dookie flakes");
 
     try {
       species_call = await fetch(species_link);
@@ -263,26 +307,33 @@ app.get('/result', async (req, res) => {
       poke_call = await fetch(poke_link);
       poke = await poke_call.json();
     } catch (e) {
-      res.render("display", variables_error);
+      console.log("ERROR USING POKEMON LINKS TO FETCH JSON");
+      console.log(e);
+      error = true;
     }
 
-    let flavor = "";
-    let artwork = poke.sprites.other["official-artwork"].front_default;
-    let dex_num = species.pokedex_numbers[0].entry_number;
-
-    if(species_name === "vulpix") {
-      flavor += "In hot weather, this Pokémon makes ice shards with its six tails and sprays them around to cool itself off.";
-    } else {
-      //get most recent english flavor text
-      for(var i = species.flavor_text_entries.length - 1; i >= 0; i--) {
-        if(species.flavor_text_entries[i].language.name === "en") {
-          flavor += species.flavor_text_entries[i].flavor_text;
-          break;
+    if(!error) {
+      if(name == 'ditto') {
+        artwork = poke.sprites.other["official-artwork"].front_shiny;
+      } else {
+        artwork = poke.sprites.other["official-artwork"].front_default;
+      }
+      dex_num = species.pokedex_numbers[0].entry_number;
+  
+      if(species_name === "vulpix") {
+        flavor += "In hot weather, this Pokémon makes ice shards with its six tails and sprays them around to cool itself off.";
+      } else {
+        //get most recent english flavor text
+        for(var i = species.flavor_text_entries.length - 1; i >= 0; i--) {
+          if(species.flavor_text_entries[i].language.name === "en") {
+            flavor += species.flavor_text_entries[i].flavor_text;
+            break;
+          }
         }
       }
     }
 
-    const variables = {
+    let variables = {
       "mood" : avg_mood,
       "energy" : avg_energy,
       "acoustic" : avg_acoustic,
@@ -295,9 +346,12 @@ app.get('/result', async (req, res) => {
       "prename": prename
     };
 
+    if(error) {
+      variables = variables_error;
+    }
+
     res.render("display", variables);
 });
-
 
 //------------------------------------------------------------------
 
@@ -385,7 +439,7 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "psychic":
       if (avg_energy > 2.5) {
         if (avg_mood > 0.8) { //E+, M+
-          return "mewtwo";
+          return "wynaut";
         } else { //E+, M-
           return "espeon";
         }
@@ -427,7 +481,7 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "ghost":
       if (avg_energy > 1.6) {
         if (avg_mood > 0.8) { //E+, M+
-          return "gengar";
+          return "phantump";
         } else { //E+, M-
           return "chandelure";
         }
@@ -561,7 +615,7 @@ function get_pokemon(avg_energy, avg_mood, type) {
         if (avg_mood > 1.45) { //E-, M+
           return "togekiss";
         } else { //E-, M-
-          return "pidgeot";
+          return "pidgey";
         }
       }
     case "bug":

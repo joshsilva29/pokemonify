@@ -12,11 +12,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.1",
     "cross-fetch": "^3.1.5",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
     "jquery": "^3.6.0",
+    "nodemailer": "^6.9.0",
     "path": "^0.12.7",
     "spotify-web-api-node": "^5.0.2"
   },

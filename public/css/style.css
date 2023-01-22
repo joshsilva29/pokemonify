@@ -35,6 +35,8 @@
 }
 
 a {
+  font-style: italic;
+  font-weight: 800;
   text-decoration: none;
 }
 
@@ -90,13 +92,6 @@ meter {
   margin-bottom: 1rem;
 }
 
-.title-display {
-  font-weight: 800;
-  text-align: center;
-  letter-spacing: 2rem;
-  font-size: 4rem;
-}
-
 #container-home {
   text-align: center;
 }
@@ -134,6 +129,9 @@ meter {
 
 #login-credits {
   font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: 0.5rem;
+  text-align: center;
 }
 
 #pokedex-background {
@@ -176,9 +174,10 @@ meter {
 }
 
 #title {
-  font-size: 10rem;
+  font-size: 12vw;
   font-weight: 500;
   margin-bottom: 0rem;
+  /* margin-top: 6rem when development message is removed */
   margin-top: 6rem;
 }
 
@@ -193,6 +192,13 @@ meter {
 
 #title-caption {
   font-size: 2rem;
+}
+
+.title-display {
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 2rem;
+  font-size: 4rem;
 }
 
 #upper-left {
@@ -302,33 +308,6 @@ meter {
 
 /* These are the media queries */
 
-@media screen and (min-width: 200px) and (max-width: 1167px) {
-  a {
-    text-decoration: underline;
-  }
-
-  body {
-    width: 100%
-  }
-
-  #login-button {
-    font-size: 2.7rem;
-  }
-
-  #login-credits {
-    font-size: 2.7rem;
-  }
-
-  #title {
-    font-size: 8rem;
-    margin-top: 6rem;
-  }
-
-  #title-caption {
-    font-size: 3rem;
-  }
-}
-
 @media screen and (max-width: 1428px) {
   meter {
     width: 96%;
@@ -364,6 +343,39 @@ meter {
 
   #upper-left {
     margin-left: 4rem;
+  }
+}
+
+@media screen and (max-width: 1167px) {
+  a {
+    font-style: italic;
+    text-decoration: none;
+  }
+
+  body {
+    width: 100%
+  }
+
+  #login-button {
+    font-size: 2.7rem;
+  }
+
+  #login-credits {
+    font-size: 2.7rem;
+  }
+
+  #title {
+    margin-top: 6rem;
+  }
+
+  #title-caption {
+    font-size: 3rem;
+  }
+}
+
+@media screen and (max-width: 447px) {
+  body {
+    margin-top: 20rem;
   }
 }
 
