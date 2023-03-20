@@ -373,6 +373,12 @@ meter {
   }
 }
 
+@media screen and (max-width: 770px) {
+  #upper-left {
+    flex-direction: column;
+  }
+}
+
 @media screen and (max-width: 447px) {
   body {
     margin-top: 20rem;
