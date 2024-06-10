@@ -10,8 +10,8 @@ require("dotenv").config({ path: path.resolve(__dirname, 'credentials/.env') });
 var spotifyApi = new SpotifyWebApi({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    redirectUri: 'https://pokemonify.onrender.com/callback'
-    // redirectUri: 'http://localhost:8888/callback'
+    // redirectUri: 'https://pokemonify.onrender.com/callback'
+    redirectUri: 'http://localhost:8888/callback'
   });
 
 // 'http://localhost:8888/callback'
@@ -136,7 +136,7 @@ app.get('/result', async (req, res) => {
 
     if(short_response) {
       short_tracks = short_response.body.items;
-      console.log(short_tracks)
+      // console.log(short_tracks)
     }
     if (medium_response) {
       medium_tracks = medium_response.body.items;
@@ -163,15 +163,15 @@ app.get('/result', async (req, res) => {
 
     try {
       if(short_arr.length) {
-        console.log("short: " + short_arr.length);
+        // console.log("short: " + short_arr.length);
         short_features_response = await spotifyApi.getAudioFeaturesForTracks(short_arr);
       }
       if(medium_arr.length) {
-        console.log("mediu: " + medium_arr.length);
+        // console.log("mediu: " + medium_arr.length);
         medium_features_response = await spotifyApi.getAudioFeaturesForTracks(medium_arr);
       }
       if(long_arr.length) {
-        console.log("large: " + long_arr.length);
+        // console.log("large: " + long_arr.length);
         long_features_response = await spotifyApi.getAudioFeaturesForTracks(long_arr);
       }
     } catch (e) {
@@ -259,8 +259,7 @@ app.get('/result', async (req, res) => {
     } else {
       type = get_type(avg_mood, avg_energy, avg_acoustic);
       name = get_pokemon(avg_energy, avg_mood, type);
-      type_color = type;
-      type = type.toUpperCase();
+      // name = "fletchling"
     }
 
     // console.log("here at least");
@@ -299,7 +298,12 @@ app.get('/result', async (req, res) => {
     let artwork = "";
     let dex_num = -1;
 
-    console.log("dookie flakes");
+    let type_1 = ""
+    let type_2 = ""
+    let second_check = "3"
+
+    let display = "display: none;"
+    let genera = ""
 
     try {
       species_call = await fetch(species_link);
@@ -319,6 +323,14 @@ app.get('/result', async (req, res) => {
         artwork = poke.sprites.other["official-artwork"].front_default;
       }
       dex_num = species.pokedex_numbers[0].entry_number;
+
+      type_1 = poke.types[0]["type"]["name"]
+      if(Object.keys(poke.types).length == 2) {
+        type_2 = poke.types[1]["type"]["name"]
+        second_check = "2"
+        console.log("TYPE 2: " + type_2)
+        display = ""
+      }
   
       if(species_name === "vulpix") {
         flavor += "In hot weather, this Pokémon makes ice shards with its six tails and sprays them around to cool itself off.";
@@ -331,6 +343,8 @@ app.get('/result', async (req, res) => {
           }
         }
       }
+      console.log(genera)
+      genera = species.genera[7]["genus"]
     }
 
     let variables = {
@@ -340,10 +354,15 @@ app.get('/result', async (req, res) => {
       "name": official_name,
       "flavor": flavor,
       "artwork": artwork,
-      "type" : type,
-      "type_color": type_color,
+      "type" : type_1.toUpperCase(),
+      "type_color": type_1,
+      "type_2": type_2.toUpperCase(),
+      "type_2_color": type_2,
+      "display_second": display,
       "dex_num": dex_num,
-      "prename": prename
+      "prename": prename,
+      "second_check": second_check,
+      "genera": genera
     };
 
     if(error) {
@@ -467,9 +486,9 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "dragon":
       if (avg_energy > 2.1) {
         if (avg_mood > 0.8) { //E+, M+
-          return "salamence";
+          return "latias";
         } else { //E+, M-
-          return "garchomp";
+          return "latios";
         }
       } else {
         if (avg_mood > 0.8) { //E-, M+
@@ -487,7 +506,7 @@ function get_pokemon(avg_energy, avg_mood, type) {
         }
       } else {
         if (avg_mood > 0.8) { //E-, M+
-          return "gastly";
+          return "gengar";
         } else { //E-, M-
           return "rotom";
         }
@@ -501,9 +520,9 @@ function get_pokemon(avg_energy, avg_mood, type) {
         }
       } else {
         if (avg_mood > 0.8) { //E-, M+
-          return "froslass";
+          return "amaura";
         } else { //E-, M-
-          return "sneasel";
+          return "swinub";
         }
       }
     case "fire":
@@ -607,9 +626,9 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "flying":
       if (avg_energy > 2.5) {
         if (avg_mood > 1.45) { //E+, M+
-          return "staraptor";
+          return "staravia";
         } else { //E+, M-
-          return "fletchinder";
+          return "fletchling";
         }
       } else {
         if (avg_mood > 1.45) { //E-, M+
@@ -623,13 +642,13 @@ function get_pokemon(avg_energy, avg_mood, type) {
         if (avg_mood > 1.45) { //E+, M+
           return "butterfree";
         } else { //E+, M-
-          return "yanma";
+          return "scyther";
         }
       } else {
         if (avg_mood > 1.45) { //E-, M+
           return "beautifly";
         } else { //E-, M-
-          return "scyther";
+          return "paras";
         }
       }
     case "fairy":
@@ -649,13 +668,13 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "ground":
       if (avg_energy > 1.6) {
         if (avg_mood > 1.45) { //E+, M+
-          return "phanpy";
+          return "diglett";
         } else { //E+, M-
           return "flygon";
         }
       } else {
         if (avg_mood > 1.45) { //E-, M+
-          return "diglett";
+          return "phanpy";
         } else { //E-, M-
           return "sandshrew";
         }

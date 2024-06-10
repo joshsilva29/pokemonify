@@ -18,7 +18,13 @@
                         <br>
                         <div id="dex-num">No. <%= dex_num %></div>
                         <br>
+                        <div id="genera-div">
+                            <div id="genera"><%= genera %></div>
+                        </div>
+                        <br>
                         <div id="type" class="<%= type_color%>"><%= type %></div>
+                        <br>
+                        <div id="type-<%= second_check%>" class="<%= type_2_color%>"><%= type_2%></div>
                     </div> 
                     <img id="my_img" src="<%= artwork %>" alt="">
                 </div>
@@ -33,10 +39,10 @@
                           <h3 class="id-label">Energy</h3>
                           <meter id="energy" min="0" low="0.6" high="1.5" max="3" optimum="2.5" value="<%= energy %>"></meter>
                         </div>
-                        <div id="acoustic-stat" class="stat">
+                        <!-- <div id="acoustic-stat" class="stat">
                           <h3 class="id-label">Acoustic</h3>
                           <meter id="acoustic" min="0" low="0.2" high="0.5" max="1" optimum="0.7" value="<%= acoustic %>"></meter>
-                        </div>
+                        </div> -->
                     </fieldset>
                 </div>
             </div>
