@@ -58,19 +58,24 @@ app.get('/callback', async (req, res) => {
     let code_str = "code: " + code + "\n";
     let err = false;
     //variables is sent when there is an error
-    let err_string = "When it encounters another Ditto, it will move\nfaster than normal to duplicate that opponent exactly.";
-    err_string += "\nUnfortunately, this Pokémon only appears if there is an error!\nPlease wait a couple minutes before reloading ths site."
+    let err_string = "This Pokémon existed 300 million years ago.\nTeam Plasma altered it and attached a cannon to its back."
+    err_string += "\nUnfortunately, this Pokémon only appears if there is an error!\nPlease wait a couple minutes before reloading this site."
     let variables = {
       "mood" : 0,
       "energy" : 0,
       "acoustic" : 0,
-      "name": "Ditto",
+      "name": "Genesect",
       "flavor": err_string,
-      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/132.png",
-      "type" : "NORMAL",
-      "type_color": "normal",
-      "dex_num": 132,
-      "prename": "a"
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/649.png",
+      "type" : "BUG",
+      "type_color": "bug",
+      "type_2": "STEEL",
+      "type_2_color": "steel",
+      "display_second": "",
+      "dex_num": "649",
+      "prename": "a",
+      "second_check": "2",
+      "genera": "Paleozoic Pokemon"
     };
 
     // console.log(code_str);
@@ -96,35 +101,57 @@ app.get('/result', async (req, res) => {
     // console.log("access token in function: " + spotifyApi.getAccessToken());
 
     //variables_error is sent when there is an error
-    let err_string = "Once it becomes an adult, it has a tendency to let\nits comrades plant footprints on its back.\n";
+    let err_string = "This Pokémon existed 300 million years ago.\nTeam Plasma altered it and attached a cannon to its back."
     err_string += "\nUnfortunately, this Pokémon only appears if there is an error!\nPlease wait a couple minutes before reloading this site."
+
     let variables_error = {
       "mood" : 0,
       "energy" : 0,
       "acoustic" : 0,
-      "name": "Smeargle",
+      "name": "Genesect",
       "flavor": err_string,
-      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/235.png",
-      "type" : "NORMAL",
-      "type_color": "normal",
-      "dex_num": 235,
-      "prename": "a"
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/649.png",
+      "type" : "BUG",
+      "type_color": "bug",
+      "type_2": "STEEL",
+      "type_2_color": "steel",
+      "display_second": "",
+      "dex_num": "649",
+      "prename": "a",
+      "second_check": "2",
+      "genera": "Paleozoic Pokemon"
     };
 
     let error = false;
 
-    let short_response;
-    let medium_response;
-    let long_response;
+    let short_response = null;
+    let medium_response = null;
+    let long_response = null;
+
+    let count = 0
 
     try {
       short_response = await spotifyApi.getMyTopTracks({time_range : "short_term", limit: 40});
-      medium_response = await spotifyApi.getMyTopTracks({time_range : "medium_term", limit: 50});
-      long_response = await spotifyApi.getMyTopTracks({time_range : "long_term", limit: 40});
+      count += 1
     } catch (e) {
-      console.log("ERROR GETTING TRACKS");
+      console.log("ERROR GETTING SHORT RESPONSE");
       console.log(e);
-      error = true;
+    }
+
+    try {
+      medium_response = await spotifyApi.getMyTopTracks({time_range : "medium_term", limit: 50});
+      count += 1
+    } catch (e) {
+      console.log("ERROR GETTING MEDIUM RESPONSE");
+      console.log(e);
+    }
+
+    try {
+      long_response = await spotifyApi.getMyTopTracks({time_range : "long_term", limit: 40});
+      count += 1
+    } catch (e) {
+      console.log("ERROR GETTING LONG RESPONSE");
+      console.log(e);
     }
 
     let short_arr = [];
@@ -245,21 +272,22 @@ app.get('/result', async (req, res) => {
 
     // console.log("smth wrong here at avg");
 
-    let avg_mood = (short_mood + medium_mood + long_mood) / 3;
-    let avg_energy = (short_energy + medium_energy + long_energy) / 3;
-    let avg_acoustic = (short_acoustic + medium_acoustic + long_acoustic) / 3;
+    let avg_mood = count == 0 ? 0 : (short_mood + medium_mood + long_mood) / count;
+    let avg_energy = count == 0 ? 0 : (short_energy + medium_energy + long_energy) / count;
+    let avg_acoustic = count == 0 ? 0 : (short_acoustic + medium_acoustic + long_acoustic) / count;
     let type = "";
     let name = "";
-    let type_color = "";
 
     if((avg_mood + avg_energy + avg_acoustic) == 0) {
-      type = "normal"
       name = "ditto"
-      type_color = "DITTO";
     } else {
       type = get_type(avg_mood, avg_energy, avg_acoustic);
       name = get_pokemon(avg_energy, avg_mood, type);
-      // name = "fletchling"
+
+      // type = get_type(medium_mood, medium_energy, medium_acoustic);
+      // name = get_pokemon(medium_energy, medium_mood, type);
+      // let test_name = "groudon"
+      // name = test_name
     }
 
     // console.log("here at least");
@@ -317,11 +345,14 @@ app.get('/result', async (req, res) => {
     }
 
     if(!error) {
-      if(name == 'ditto') {
+      let rand_val = Math.random() * (4096 - 1) + 1;
+
+      if(rand_val == 151) {
         artwork = poke.sprites.other["official-artwork"].front_shiny;
       } else {
         artwork = poke.sprites.other["official-artwork"].front_default;
       }
+
       dex_num = species.pokedex_numbers[0].entry_number;
 
       type_1 = poke.types[0]["type"]["name"]
@@ -598,15 +629,18 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "steel":
       if (avg_energy > 1.6) {
         if (avg_mood > 1.15) { //E+, M+
-          return "mawile"; 
+          return "magnemite"; 
         } else { //E+, M-
-          return "magnemite";
+          return "mawile";
         }
       } else {
         if (avg_mood > 1.15) { //E-, M+
-          return "skarmory";
-        } else { //E-, M-
           return "jirachi";
+        } else { //E-, M-
+          if(avg_mood - 1.13 < 0.01 && avg_mood - 1.13 > 0) {
+            return "dialga";
+          }
+          return "skarmory";
         }
       }
     case "electric":

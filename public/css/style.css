@@ -113,6 +113,11 @@ meter {
   font-size: 2rem;
 }
 
+#inner-container {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
 #left-pokedex {
   display: flex;
   flex-direction: row;
