@@ -35,13 +35,12 @@
 }
 
 a {
-  font-style: italic;
   font-weight: 800;
   text-decoration: none;
-  color: orange
+  text-align: center;
 }
 
-a:hover {
+#linkedin:hover {
   text-decoration: underline;
 }
 
@@ -122,6 +121,10 @@ meter {
   display: flex;
   flex-direction: row;
   margin: auto;
+}
+
+#linkedin {
+  color: orange
 }
 
 #login-button {

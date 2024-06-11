@@ -286,7 +286,7 @@ app.get('/result', async (req, res) => {
 
       // type = get_type(medium_mood, medium_energy, medium_acoustic);
       // name = get_pokemon(medium_energy, medium_mood, type);
-      // let test_name = "groudon"
+      // let test_name = "azelf"
       // name = test_name
     }
 
@@ -475,15 +475,21 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "dark":
       if (avg_energy > 2.5) {
         if (avg_mood > 0.8) { //E+, M+
+          if(avg_mood >= 0.99) {
+            return "darkrai";
+          }
           return "honchkrow";
         } else { //E+, M-
-          return "umbreon";
+          if(avg_energy > 2.75) {
+            return "sneasel";
+          }
+          return "zorua";
         }
       } else {
         if (avg_mood > 0.8) { //E-, M+
           return "absol";
         } else { //E-, M-
-          return "zorua";
+          return "umbreon";
         }
       }
     case "psychic":
@@ -495,6 +501,9 @@ function get_pokemon(avg_energy, avg_mood, type) {
         }
       } else {
         if (avg_mood > 0.8) { //E-, M+
+          if(avg_energy < 2.4) {
+            return "azelf"
+          }
           return "mew";
         } else { //E-, M-
           return "abra";
@@ -517,8 +526,14 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "dragon":
       if (avg_energy > 2.1) {
         if (avg_mood > 0.8) { //E+, M+
+          if (avg_energy < 2.2) {
+            return "noibat"
+          }
           return "latias";
         } else { //E+, M-
+          if (avg_energy < 2.4) {
+            return "axew"
+          }
           return "latios";
         }
       } else {
@@ -531,15 +546,15 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "ghost":
       if (avg_energy > 1.6) {
         if (avg_mood > 0.8) { //E+, M+
-          return "phantump";
+          return "marshadow";
         } else { //E+, M-
-          return "chandelure";
+          return "gengar";
         }
       } else {
         if (avg_mood > 0.8) { //E-, M+
-          return "gengar";
+          return "litwick";
         } else { //E-, M-
-          return "rotom";
+          return "drifblim";
         }
       }
     case "ice":
@@ -547,24 +562,33 @@ function get_pokemon(avg_energy, avg_mood, type) {
         if (avg_mood > 0.8) { //E+, M+
           return "vulpix-alola"; //troubleshoot vulpix
         } else { //E+, M-
-          return "glaceon";
+          return "articuno";
         }
       } else {
         if (avg_mood > 0.8) { //E-, M+
-          return "amaura";
+          return "glaceon";
         } else { //E-, M-
-          return "swinub";
+          return "beartic";
         }
       }
     case "fire":
       if (avg_energy > 2.5) {
         if (avg_mood > 1.15) { //E+, M+
+          if(avg_mood < 1.22) {
+            return "charizard"
+          }
           return "charmander";
         } else { //E+, M-
+          if (avg_mood > 1.08) {
+            return "growlithe"
+          }
           return "cyndaquil";
         }
       } else {
         if (avg_mood > 1.15) { //E-, M+
+          if(avg_mood < 1.22) {
+            return "tepig"
+          }
           return "chimchar";
         } else { //E-, M-
           return "torchic";
@@ -579,9 +603,15 @@ function get_pokemon(avg_energy, avg_mood, type) {
         }
       } else {
         if (avg_mood > 1.15) { //E-, M+
+          if(avg_mood < 1.22) {
+            return "tyrogue"
+          }
           return "riolu";
         } else { //E-, M-
-          return "machop";
+          if(avg_mood < 1.075) {
+            return "machop"
+          }
+          return "meditite";
         }
       }
     case "normal":
@@ -593,49 +623,85 @@ function get_pokemon(avg_energy, avg_mood, type) {
         }
       } else {
         if (avg_mood > 1.15) { //E-, M+
+          if(avg_mood > 1.24) {
+            return "teddiursa"
+          }
           return "bidoof";
         } else { //E-, M-
+          if(avg_energy > 2) {
+            return "munchlax";
+          }
           return "snorlax";
         }
       }
     case "water":
       if (avg_energy > 2.1) {
         if (avg_mood > 1.15) { //E+, M+
+          if(avg_mood > 1.22) {
+            return "horsea"
+          }
           return "squirtle";
         } else { //E+, M-
+          if(avg_energy > 2.23) {
+            return "empoleon"
+          }
           return "piplup";
         }
       } else {
         if (avg_mood > 1.15) { //E-, M+
+          if(avg_energy < 1.9) {
+            return "slowpoke"
+          }
           return "lapras";
         } else { //E-, M-
+          if(avg_mood - 1.25 < 0.01 && avg_mood - 1.25 > 0) {
+            return "kyogre"
+          }
           return "vaporeon";
         }
       }
     case "grass":
       if (avg_energy > 1.6) {
         if (avg_mood > 1.15) { //E+, M+
+          if(avg_energy < 1.75) {
+            return 'hoppip'
+          }
           return "shaymin-sky"; //troubleshoot shaymin
         } else { //E+, M-
+          if(avg_mood > 1.24) {
+            return "treecko"
+          }
           return "bulbasaur";
         }
       } else {
         if (avg_mood > 1.15) { //E-, M+
-          return "turtwig";
+          if(avg_mood < 1.2) {
+            return "turtwig"
+          }
+          return "skiddo";
         } else { //E-, M-
-          return "celebi";
+          if(avg_mood < 1.06) {
+            return "leafeon"
+          }
+          return "chespin";
         }
       }
     case "steel":
       if (avg_energy > 1.6) {
         if (avg_mood > 1.15) { //E+, M+
-          return "magnemite"; 
+          if(avg_mood < 1.21) {
+            return "magnemite"
+          }
+          return "aron"; 
         } else { //E+, M-
           return "mawile";
         }
       } else {
         if (avg_mood > 1.15) { //E-, M+
-          return "jirachi";
+          if(avg_mood < 1.2) {
+            return "jirachi"
+          }
+          return "cufant";
         } else { //E-, M-
           if(avg_mood - 1.13 < 0.01 && avg_mood - 1.13 > 0) {
             return "dialga";
@@ -652,36 +718,63 @@ function get_pokemon(avg_energy, avg_mood, type) {
         }
       } else {
         if (avg_mood > 1.45) { //E-, M+
+          if(avg_energy < 2.4) {
+            return "jolteon"
+          }
           return "raichu";
         } else { //E-, M-
+          if (avg_energy < 2.4) {
+            return "pachirisu"
+          }
           return "pichu";
         }
       }
     case "flying":
       if (avg_energy > 2.5) {
         if (avg_mood > 1.45) { //E+, M+
+          if(avg_mood > 1.7) {
+            return "doduo"
+          }
           return "staravia";
         } else { //E+, M-
           return "fletchling";
         }
       } else {
         if (avg_mood > 1.45) { //E-, M+
+          if(avg_energy < 2.3) {
+            return "altaria"
+          }
           return "togekiss";
         } else { //E-, M-
+          if(avg_mood < 1.36) {
+            return "natu"
+          }
           return "pidgey";
         }
       }
     case "bug":
       if (avg_energy > 2.1) {
         if (avg_mood > 1.45) { //E+, M+
+          if(avg_mood > 1.5) {
+            return "vivillon"
+          }
           return "butterfree";
         } else { //E+, M-
+          if(avg_energy > 2) {
+            return "venomoth"
+          }
           return "scyther";
         }
       } else {
         if (avg_mood > 1.45) { //E-, M+
-          return "beautifly";
+          if(avg_mood > 1.5) {
+            return "caterpie"
+          }
+          return "heracross";
         } else { //E-, M-
+          if(avg_energy > 2) {
+            return "weedle"
+          }
           return "paras";
         }
       }
@@ -702,6 +795,9 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "ground":
       if (avg_energy > 1.6) {
         if (avg_mood > 1.45) { //E+, M+
+          if(avg_mood < 1.55) {
+            return "drilbur"
+          }
           return "diglett";
         } else { //E+, M-
           return "flygon";
@@ -716,9 +812,9 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "rock":
       if (avg_energy > 1.6) {
         if (avg_mood > 1.45) { //E+, M+
-          return "geodude";
-        } else { //E+, M-
           return "rockruff";
+        } else { //E+, M-
+          return "geodude";
         }
       } else {
         if (avg_mood > 1.45) { //E-, M+
