@@ -286,8 +286,23 @@ app.get('/result', async (req, res) => {
 
       // type = get_type(medium_mood, medium_energy, medium_acoustic);
       // name = get_pokemon(medium_energy, medium_mood, type);
-      // let test_name = "azelf"
-      // name = test_name
+      let rand_val = Math.floor(Math.random() * (8096 - 1)) + 1;
+      if(rand_val == 493) {
+        name = "arceus"
+      }
+
+      if(specialDay) {
+        if(rand_val < 200) {
+          name = "oddish"
+        } else if(rand_val > 200 && rand_val < 250) {
+          name = "koffing"
+        } else if(rand_val == 420) {
+          name = "blaziken"
+        }
+      }
+
+      let test_name = "ariados"
+      name = test_name
     }
 
     // console.log("here at least");
@@ -345,7 +360,7 @@ app.get('/result', async (req, res) => {
     }
 
     if(!error) {
-      let rand_val = Math.random() * (4096 - 1) + 1;
+      let rand_val = Math.floor(Math.random() * (4096 - 1)) + 1;
 
       if(rand_val == 151) {
         artwork = poke.sprites.other["official-artwork"].front_shiny;
@@ -514,7 +529,7 @@ function get_pokemon(avg_energy, avg_mood, type) {
         if (avg_mood > 0.8) { //E+, M+
           return "crobat";
         } else { //E+, M-
-          return "toxicroak";
+          return "foongus";
         }
       } else {
         if (avg_mood > 0.8) { //E-, M+
@@ -591,6 +606,9 @@ function get_pokemon(avg_energy, avg_mood, type) {
           }
           return "chimchar";
         } else { //E-, M-
+          if (avg_energy < 2.39) {
+            return "ponyta";
+          }
           return "torchic";
         }
       }
@@ -617,8 +635,14 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "normal":
       if (avg_energy > 2.1) {
         if (avg_mood > 1.15) { //E+, M+
+          if(avg_mood > 1.24) {
+            return "litleo"
+          }
           return "eevee";
         } else { //E+, M-
+          if(avg_mood > 1.075) {
+            return "aipom"
+          }
           return "meowth";
         }
       } else {
@@ -631,7 +655,7 @@ function get_pokemon(avg_energy, avg_mood, type) {
           if(avg_energy > 2) {
             return "munchlax";
           }
-          return "snorlax";
+          return "komala";
         }
       }
     case "water":
@@ -643,7 +667,7 @@ function get_pokemon(avg_energy, avg_mood, type) {
           return "squirtle";
         } else { //E+, M-
           if(avg_energy > 2.23) {
-            return "empoleon"
+            return "psyduck"
           }
           return "piplup";
         }
@@ -656,6 +680,9 @@ function get_pokemon(avg_energy, avg_mood, type) {
         } else { //E-, M-
           if(avg_mood - 1.25 < 0.01 && avg_mood - 1.25 > 0) {
             return "kyogre"
+          }
+          if(avg_mood < 1.05 && avg_energy < 1.93) {
+            return "magikarp"
           }
           return "vaporeon";
         }
@@ -712,6 +739,9 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "electric":
       if (avg_energy > 2.5) {
         if (avg_mood > 1.45) { //E+, M+
+          if(avg_mood > 1.6) {
+            return "yamper"
+          }
           return "shinx";
         } else { //E+, M-
           return "pikachu";
@@ -781,12 +811,18 @@ function get_pokemon(avg_energy, avg_mood, type) {
     case "fairy":
       if (avg_energy > 2.1) {
         if (avg_mood > 1.45) { //E+, M+
+          if(avg_energy > 2.23) {
+            return "togepi"
+          }
           return "sylveon";
         } else { //E+, M-
           return "jigglypuff";
         }
       } else {
         if (avg_mood > 1.45) { //E-, M+
+          if(avg_mood < 1.467 && avg_mood > 1.464) {
+            return "xerneas"
+          }
           return "gardevoir";
         } else { //E-, M-
           return "clefairy";
@@ -826,6 +862,13 @@ function get_pokemon(avg_energy, avg_mood, type) {
     default: 
       return "arceus";
   }
+}
+
+function specialDay() {
+  let today = new Date();
+  let month = today.getMonth(); 
+  let day = today.getDate();
+  return month === 3 && day === 20; 
 }
 
 // app.get('/refresh', function routeHandler(req, res) {});

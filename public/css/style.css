@@ -31,7 +31,7 @@
 * {
     color: white;
     font-family: 'Figtree', sans-serif;
-    font-weight: 400;
+    font-weight: 600;
 }
 
 a {
@@ -110,6 +110,7 @@ meter {
 
 #genera-div {
   font-size: 2rem;
+  font-weight: 400;
 }
 
 #inner-container {
@@ -227,7 +228,7 @@ meter {
 .title-display {
   font-weight: 800;
   text-align: center;
-  letter-spacing: 2rem;
+  letter-spacing: 1.3rem;
   font-size: 4rem;
 }
 
@@ -238,6 +239,7 @@ meter {
 
 #name {
   font-size: 4rem;
+  font-weight: 600;
 }
 
 #you-are {
@@ -338,7 +340,7 @@ meter {
 
 /* These are the media queries */
 
-@media screen and (max-width: 1428px) {
+@media screen and (max-width: 1500px) {
   meter {
     width: 96%;
     height: 30px;
@@ -376,7 +378,7 @@ meter {
   } */
 }
 
-@media screen and (max-width: 1167px) {
+/* @media screen and (max-width: 1167px) {
 
   body {
     width: 100%
@@ -397,7 +399,7 @@ meter {
   #title-caption {
     font-size: 3rem;
   }
-}
+} */
 
 @media screen and (max-width: 770px) {
   #upper-left {

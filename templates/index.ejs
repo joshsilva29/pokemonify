@@ -3,6 +3,14 @@
 
 <head>
     <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <script>
+      function checkReload() {
+          if (performance.navigation.type === 1) {
+              window.location.href = "/";
+          }
+      }
+      window.onload = checkReload;
+  </script>
 </head>
 
 <body>
