@@ -342,7 +342,7 @@ meter {
 
 /* These are the media queries */
 
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 1300px) {
   meter {
     width: 96%;
     height: 30px;

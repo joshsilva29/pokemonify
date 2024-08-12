@@ -84,19 +84,21 @@ app.get('/callback', async (req, res) => {
       let data = await spotifyApi.authorizationCodeGrant(code);
       // Set the access token on the API object to use it in later calls
       spotifyApi.setAccessToken(data.body['access_token']);
+      // console.log(data.body['access_token'])
       spotifyApi.setRefreshToken(data.body['refresh_token']);
     } catch (e) {
       err = true
       res.render("display", variables);
     }
     if(!err) {
-      res.redirect('/result');
+      res.redirect(`/result/${spotifyApi.getAccessToken()}`)
+      // res.redirect('/result');
     }
   } 
 );
 
 //seperate endpoint so code will not show in the url
-app.get('/result', async (req, res) => {
+app.get('/result/:id', async (req, res) => {
     //calculations to determine pokemon
     // console.log("access token in function: " + spotifyApi.getAccessToken());
 
