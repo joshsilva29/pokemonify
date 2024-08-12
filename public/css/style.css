@@ -72,6 +72,7 @@ body {
 
 img {
   margin-left: 2rem;
+  width: 27.2rem;
 }
 
 meter {
@@ -153,7 +154,6 @@ meter {
 }
 
 #pokedex-background {
-  margin: 3rem;
   background: rgb(37,113,156);
   background: linear-gradient(0deg, rgba(37,113,156,1) 0%, rgba(25,71,131,1) 100%);
   border-top: 2rem solid white;
@@ -166,6 +166,7 @@ meter {
   padding-right: 3.5rem;
   padding-top: 1.5rem;
   padding-bottom: 3rem;
+  width: fit-content;
 }
 
 #right-pokedex {
@@ -353,6 +354,7 @@ meter {
 
   #left-pokedex {
     flex-direction: column;
+    width: 100%;
   }
 
   #right-pokedex {
