@@ -301,8 +301,8 @@ app.get('/result', async (req, res) => {
         }
       }
 
-      let test_name = "aron"
-      name = test_name
+      // let test_name = "aron"
+      // name = test_name
     }
 
     // console.log("here at least");
