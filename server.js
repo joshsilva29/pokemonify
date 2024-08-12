@@ -59,7 +59,7 @@ app.get('/callback', async (req, res) => {
     let err = false;
     //variables is sent when there is an error
     let err_string = "This Pokémon existed 300 million years ago.\nTeam Plasma altered it and attached a cannon to its back."
-    err_string += "\nUnfortunately, this Pokémon only appears if there is an error!\nPlease wait a couple minutes before reloading this site."
+    err_string += "\nUnfortunately, this Pokémon only appears if there is an error!\nPlease go back to the home page and log in again."
     let variables = {
       "mood" : 0,
       "energy" : 0,
@@ -102,6 +102,18 @@ app.get('/result/:id', async (req, res) => {
     //calculations to determine pokemon
     // console.log("access token in function: " + spotifyApi.getAccessToken());
 
+    try {
+      let x = spotifyApi.getAccessToken()
+      let y = spotifyApi.getRefreshToken()
+    } catch (e) {
+      console.log(e)
+    }
+
+    //if these are undefined, just log in again.
+    if(!spotifyApi.getAccessToken() || !spotifyApi.getAccessToken()) {
+      res.redirect("/login")
+    }
+
     //variables_error is sent when there is an error
     let err_string = "This Pokémon existed 300 million years ago.\nTeam Plasma altered it and attached a cannon to its back."
     err_string += "\nUnfortunately, this Pokémon only appears if there is an error!\nPlease wait a couple minutes before reloading this site."
@@ -132,292 +144,297 @@ app.get('/result/:id', async (req, res) => {
 
     let count = 0
 
+    //any random uncaught errors will be caught by this overarching try catch block
     try {
-      short_response = await spotifyApi.getMyTopTracks({time_range : "short_term", limit: 40});
-      count += 1
-    } catch (e) {
-      console.log("ERROR GETTING SHORT RESPONSE");
-      console.log(e);
-    }
-
-    try {
-      medium_response = await spotifyApi.getMyTopTracks({time_range : "medium_term", limit: 50});
-      count += 1
-    } catch (e) {
-      console.log("ERROR GETTING MEDIUM RESPONSE");
-      console.log(e);
-    }
-
-    try {
-      long_response = await spotifyApi.getMyTopTracks({time_range : "long_term", limit: 40});
-      count += 1
-    } catch (e) {
-      console.log("ERROR GETTING LONG RESPONSE");
-      console.log(e);
-    }
-
-    let short_arr = [];
-    let medium_arr = [];
-    let long_arr = [];
-    let short_tracks = [];
-    let medium_tracks = [];
-    let long_tracks = [];
-
-    if(short_response) {
-      short_tracks = short_response.body.items;
-      // console.log(short_tracks)
-    }
-    if (medium_response) {
-      medium_tracks = medium_response.body.items;
-    }
-    if (long_response) {
-      long_tracks = long_response.body.items;
-    }
-
-    for(const song of short_tracks) {
-      short_arr.push(song["id"]);
-    }
-
-    for(const song of medium_tracks) {
-      medium_arr.push(song["id"]);
-    }
-
-    for(const song of long_tracks) {
-      long_arr.push(song["id"]);
-    }
-
-    let short_features_response;
-    let medium_features_response;
-    let long_features_response;
-
-    try {
+      try {
+        short_response = await spotifyApi.getMyTopTracks({time_range : "short_term", limit: 40});
+        count += 1
+      } catch (e) {
+        console.log("ERROR GETTING SHORT RESPONSE");
+        console.log(e);
+      }
+  
+      try {
+        medium_response = await spotifyApi.getMyTopTracks({time_range : "medium_term", limit: 50});
+        count += 1
+      } catch (e) {
+        console.log("ERROR GETTING MEDIUM RESPONSE");
+        console.log(e);
+      }
+  
+      try {
+        long_response = await spotifyApi.getMyTopTracks({time_range : "long_term", limit: 40});
+        count += 1
+      } catch (e) {
+        console.log("ERROR GETTING LONG RESPONSE");
+        console.log(e);
+      }
+  
+      let short_arr = [];
+      let medium_arr = [];
+      let long_arr = [];
+      let short_tracks = [];
+      let medium_tracks = [];
+      let long_tracks = [];
+  
+      if(short_response) {
+        short_tracks = short_response.body.items;
+        // console.log(short_tracks)
+      }
+      if (medium_response) {
+        medium_tracks = medium_response.body.items;
+      }
+      if (long_response) {
+        long_tracks = long_response.body.items;
+      }
+  
+      for(const song of short_tracks) {
+        short_arr.push(song["id"]);
+      }
+  
+      for(const song of medium_tracks) {
+        medium_arr.push(song["id"]);
+      }
+  
+      for(const song of long_tracks) {
+        long_arr.push(song["id"]);
+      }
+  
+      let short_features_response;
+      let medium_features_response;
+      let long_features_response;
+  
+      try {
+        if(short_arr.length) {
+          // console.log("short: " + short_arr.length);
+          short_features_response = await spotifyApi.getAudioFeaturesForTracks(short_arr);
+        }
+        if(medium_arr.length) {
+          // console.log("mediu: " + medium_arr.length);
+          medium_features_response = await spotifyApi.getAudioFeaturesForTracks(medium_arr);
+        }
+        if(long_arr.length) {
+          // console.log("large: " + long_arr.length);
+          long_features_response = await spotifyApi.getAudioFeaturesForTracks(long_arr);
+        }
+      } catch (e) {
+        console.log("ERROR FETCHING AUDIO FEATURES");
+        console.log(e);
+        error = true;
+      }
+  
+      let short_mood = 0;
+      let medium_mood = 0;
+      let long_mood = 0;
+  
+      let short_energy= 0;
+      let medium_energy = 0;
+      let long_energy = 0;
+  
+      let short_acoustic= 0;
+      let medium_acoustic = 0;
+      let long_acoustic = 0;
+  
       if(short_arr.length) {
-        // console.log("short: " + short_arr.length);
-        short_features_response = await spotifyApi.getAudioFeaturesForTracks(short_arr);
-      }
-      if(medium_arr.length) {
-        // console.log("mediu: " + medium_arr.length);
-        medium_features_response = await spotifyApi.getAudioFeaturesForTracks(medium_arr);
-      }
-      if(long_arr.length) {
-        // console.log("large: " + long_arr.length);
-        long_features_response = await spotifyApi.getAudioFeaturesForTracks(long_arr);
-      }
-    } catch (e) {
-      console.log("ERROR FETCHING AUDIO FEATURES");
-      console.log(e);
-      error = true;
-    }
-
-    let short_mood = 0;
-    let medium_mood = 0;
-    let long_mood = 0;
-
-    let short_energy= 0;
-    let medium_energy = 0;
-    let long_energy = 0;
-
-    let short_acoustic= 0;
-    let medium_acoustic = 0;
-    let long_acoustic = 0;
-
-    if(short_arr.length) {
-      for (const song of short_features_response.body.audio_features) {
-        short_mood += song["valence"] + song["mode"];
-        short_energy += song["energy"] + song["danceability"];
-        short_acoustic += song["acousticness"];
-        if (song["tempo"] < 108) {
-          short_energy += song["tempo"] / 108;
-        } else if (song["tempo"] >= 108) {
-          short_energy += 1;
-        }
-      }
-  
-      short_mood /= short_features_response.body.audio_features.length;
-      short_energy /= short_features_response.body.audio_features.length;
-      short_acoustic /= short_features_response.body.audio_features.length;
-    }
-
-    if(medium_arr.length) {
-      for (const song of medium_features_response.body.audio_features) {
-        medium_mood += song["valence"] + song["mode"];
-        medium_energy += song["energy"] + song["danceability"];
-        medium_acoustic += song["acousticness"];
-        if (song["tempo"] < 108) {
-          medium_energy += song["tempo"] / 108;
-        } else if (song["tempo"] >= 108) {
-          medium_energy += 1;
-        }
-      }
-  
-      medium_mood /= medium_features_response.body.audio_features.length;
-      medium_energy /= medium_features_response.body.audio_features.length;
-      medium_acoustic /= medium_features_response.body.audio_features.length;
-    }
-
-    if(long_arr.length) {
-      for (const song of long_features_response.body.audio_features) {
-        long_mood += song["valence"] + song["mode"];
-        long_energy += song["energy"] + song["danceability"];
-        long_acoustic += song["acousticness"];
-        if (song["tempo"] < 108) {
-          long_energy += song["tempo"] / 108;
-        } else if (song["tempo"] > 108) {
-          long_energy += 1;
-        }
-      }
-  
-      long_mood /= long_features_response.body.audio_features.length;
-      long_energy /= long_features_response.body.audio_features.length;
-      long_acoustic /= long_features_response.body.audio_features.length;
-    }
-
-    // console.log("smth wrong here at avg");
-
-    let avg_mood = count == 0 ? 0 : (short_mood + medium_mood + long_mood) / count;
-    let avg_energy = count == 0 ? 0 : (short_energy + medium_energy + long_energy) / count;
-    let avg_acoustic = count == 0 ? 0 : (short_acoustic + medium_acoustic + long_acoustic) / count;
-    let type = "";
-    let name = "";
-
-    if((avg_mood + avg_energy + avg_acoustic) == 0) {
-      name = "ditto"
-    } else {
-      type = get_type(avg_mood, avg_energy, avg_acoustic);
-      name = get_pokemon(avg_energy, avg_mood, type);
-
-      // type = get_type(medium_mood, medium_energy, medium_acoustic);
-      // name = get_pokemon(medium_energy, medium_mood, type);
-      let rand_val = Math.floor(Math.random() * (8096 - 1)) + 1;
-      if(rand_val == 493) {
-        name = "arceus"
-      }
-
-      if(specialDay) {
-        if(rand_val < 200) {
-          name = "oddish"
-        } else if(rand_val > 200 && rand_val < 250) {
-          name = "koffing"
-        } else if(rand_val == 420) {
-          name = "blaziken"
-        }
-      }
-
-      // let test_name = "aron"
-      // name = test_name
-    }
-
-    // console.log("here at least");
-
-    let prename = "a";
-
-    vowels = ['a', 'e', 'i', 'o', 'u'];
-    if(vowels.includes(name.charAt(0))) {
-      prename = "an"
-    }
-
-    let species_name = name;
-    let official_name = name.charAt(0).toUpperCase() + name.slice(1);
-    //species link gets json with flavor text (use omega ruby flavor texts)
-    //poke link gets artwork
-    //species link does not work with shaymin-sky or vulpix-alola
-
-    if (name.toLowerCase() === "shaymin-sky") {
-      species_name = "shaymin";
-    } else if (name.toLowerCase() === "vulpix-alola") {
-      species_name = "vulpix";
-      official_name = "Alolan Vulpix";
-    }
-
-    let species_link = "https://pokeapi.co/api/v2/pokemon-species/" + species_name;
-    let poke_link = "https://pokeapi.co/api/v2/pokemon/" + name;
-
-    // console.log(species_link);
-    // console.log(poke_link);
-
-    let species_call;
-    let species;
-    let poke_call;
-    let poke;
-    let flavor = "";
-    let artwork = "";
-    let dex_num = -1;
-
-    let type_1 = ""
-    let type_2 = ""
-    let second_check = "3"
-
-    let display = "display: none;"
-    let genera = ""
-
-    try {
-      species_call = await fetch(species_link);
-      species = await species_call.json();
-      poke_call = await fetch(poke_link);
-      poke = await poke_call.json();
-    } catch (e) {
-      console.log("ERROR USING POKEMON LINKS TO FETCH JSON");
-      console.log(e);
-      error = true;
-    }
-
-    if(!error) {
-      let rand_val = Math.floor(Math.random() * (4096 - 1)) + 1;
-
-      if(rand_val == 151) {
-        artwork = poke.sprites.other["official-artwork"].front_shiny;
-      } else {
-        artwork = poke.sprites.other["official-artwork"].front_default;
-      }
-
-      dex_num = species.pokedex_numbers[0].entry_number;
-
-      type_1 = poke.types[0]["type"]["name"]
-      if(Object.keys(poke.types).length == 2) {
-        type_2 = poke.types[1]["type"]["name"]
-        second_check = "2"
-        console.log("TYPE 2: " + type_2)
-        display = ""
-      }
-  
-      if(species_name === "vulpix") {
-        flavor += "In hot weather, this Pokémon makes ice shards with its six tails and sprays them around to cool itself off.";
-      } else {
-        //get most recent english flavor text
-        for(var i = species.flavor_text_entries.length - 1; i >= 0; i--) {
-          if(species.flavor_text_entries[i].language.name === "en") {
-            flavor += species.flavor_text_entries[i].flavor_text;
-            break;
+        for (const song of short_features_response.body.audio_features) {
+          short_mood += song["valence"] + song["mode"];
+          short_energy += song["energy"] + song["danceability"];
+          short_acoustic += song["acousticness"];
+          if (song["tempo"] < 108) {
+            short_energy += song["tempo"] / 108;
+          } else if (song["tempo"] >= 108) {
+            short_energy += 1;
           }
         }
+    
+        short_mood /= short_features_response.body.audio_features.length;
+        short_energy /= short_features_response.body.audio_features.length;
+        short_acoustic /= short_features_response.body.audio_features.length;
       }
-      console.log(genera)
-      genera = species.genera[7]["genus"]
+  
+      if(medium_arr.length) {
+        for (const song of medium_features_response.body.audio_features) {
+          medium_mood += song["valence"] + song["mode"];
+          medium_energy += song["energy"] + song["danceability"];
+          medium_acoustic += song["acousticness"];
+          if (song["tempo"] < 108) {
+            medium_energy += song["tempo"] / 108;
+          } else if (song["tempo"] >= 108) {
+            medium_energy += 1;
+          }
+        }
+    
+        medium_mood /= medium_features_response.body.audio_features.length;
+        medium_energy /= medium_features_response.body.audio_features.length;
+        medium_acoustic /= medium_features_response.body.audio_features.length;
+      }
+  
+      if(long_arr.length) {
+        for (const song of long_features_response.body.audio_features) {
+          long_mood += song["valence"] + song["mode"];
+          long_energy += song["energy"] + song["danceability"];
+          long_acoustic += song["acousticness"];
+          if (song["tempo"] < 108) {
+            long_energy += song["tempo"] / 108;
+          } else if (song["tempo"] > 108) {
+            long_energy += 1;
+          }
+        }
+    
+        long_mood /= long_features_response.body.audio_features.length;
+        long_energy /= long_features_response.body.audio_features.length;
+        long_acoustic /= long_features_response.body.audio_features.length;
+      }
+  
+      // console.log("smth wrong here at avg");
+  
+      let avg_mood = count == 0 ? 0 : (short_mood + medium_mood + long_mood) / count;
+      let avg_energy = count == 0 ? 0 : (short_energy + medium_energy + long_energy) / count;
+      let avg_acoustic = count == 0 ? 0 : (short_acoustic + medium_acoustic + long_acoustic) / count;
+      let type = "";
+      let name = "";
+  
+      if((avg_mood + avg_energy + avg_acoustic) == 0) {
+        name = "ditto"
+      } else {
+        type = get_type(avg_mood, avg_energy, avg_acoustic);
+        name = get_pokemon(avg_energy, avg_mood, type);
+  
+        // type = get_type(medium_mood, medium_energy, medium_acoustic);
+        // name = get_pokemon(medium_energy, medium_mood, type);
+        let rand_val = Math.floor(Math.random() * (8096 - 1)) + 1;
+        if(rand_val == 493) {
+          name = "arceus"
+        }
+  
+        if(specialDay()) {
+          if(rand_val < 200) {
+            name = "oddish"
+          } else if(rand_val > 200 && rand_val < 250) {
+            name = "koffing"
+          } else if(rand_val == 420) {
+            name = "blaziken"
+          }
+        }
+  
+        // let test_name = "aron"
+        // name = test_name
+      }
+  
+      // console.log("here at least");
+  
+      let prename = "a";
+  
+      vowels = ['a', 'e', 'i', 'o', 'u'];
+      if(vowels.includes(name.charAt(0))) {
+        prename = "an"
+      }
+  
+      let species_name = name;
+      let official_name = name.charAt(0).toUpperCase() + name.slice(1);
+      //species link gets json with flavor text (use omega ruby flavor texts)
+      //poke link gets artwork
+      //species link does not work with shaymin-sky or vulpix-alola
+  
+      if (name.toLowerCase() === "shaymin-sky") {
+        species_name = "shaymin";
+      } else if (name.toLowerCase() === "vulpix-alola") {
+        species_name = "vulpix";
+        official_name = "Alolan Vulpix";
+      }
+  
+      let species_link = "https://pokeapi.co/api/v2/pokemon-species/" + species_name;
+      let poke_link = "https://pokeapi.co/api/v2/pokemon/" + name;
+  
+      // console.log(species_link);
+      // console.log(poke_link);
+  
+      let species_call;
+      let species;
+      let poke_call;
+      let poke;
+      let flavor = "";
+      let artwork = "";
+      let dex_num = -1;
+  
+      let type_1 = ""
+      let type_2 = ""
+      let second_check = "3"
+  
+      let display = "display: none;"
+      let genera = ""
+  
+      try {
+        species_call = await fetch(species_link);
+        species = await species_call.json();
+        poke_call = await fetch(poke_link);
+        poke = await poke_call.json();
+      } catch (e) {
+        console.log("ERROR USING POKEMON LINKS TO FETCH JSON");
+        console.log(e);
+        error = true;
+      }
+  
+      if(!error) {
+        let rand_val = Math.floor(Math.random() * (4096 - 1)) + 1;
+  
+        if(rand_val == 151) {
+          artwork = poke.sprites.other["official-artwork"].front_shiny;
+        } else {
+          artwork = poke.sprites.other["official-artwork"].front_default;
+        }
+  
+        dex_num = species.pokedex_numbers[0].entry_number;
+  
+        type_1 = poke.types[0]["type"]["name"]
+        if(Object.keys(poke.types).length == 2) {
+          type_2 = poke.types[1]["type"]["name"]
+          second_check = "2"
+          // console.log("TYPE 2: " + type_2)
+          display = ""
+        }
+    
+        if(species_name === "vulpix") {
+          flavor += "In hot weather, this Pokémon makes ice shards with its six tails and sprays them around to cool itself off.";
+        } else {
+          //get most recent english flavor text
+          for(var i = species.flavor_text_entries.length - 1; i >= 0; i--) {
+            if(species.flavor_text_entries[i].language.name === "en") {
+              flavor += species.flavor_text_entries[i].flavor_text;
+              break;
+            }
+          }
+        }
+        // console.log(genera)
+        genera = species.genera[7]["genus"]
+      }
+  
+      let variables = {
+        "mood" : avg_mood,
+        "energy" : avg_energy,
+        "acoustic" : avg_acoustic,
+        "name": official_name,
+        "flavor": flavor,
+        "artwork": artwork,
+        "type" : type_1.toUpperCase(),
+        "type_color": type_1,
+        "type_2": type_2.toUpperCase(),
+        "type_2_color": type_2,
+        "display_second": display,
+        "dex_num": dex_num,
+        "prename": prename,
+        "second_check": second_check,
+        "genera": genera
+      };
+  
+      if(error) {
+        variables = variables_error;
+      }
+  
+      res.render("display", variables);
+    } catch (e) {
+      res.render("display", variables_error);
     }
-
-    let variables = {
-      "mood" : avg_mood,
-      "energy" : avg_energy,
-      "acoustic" : avg_acoustic,
-      "name": official_name,
-      "flavor": flavor,
-      "artwork": artwork,
-      "type" : type_1.toUpperCase(),
-      "type_color": type_1,
-      "type_2": type_2.toUpperCase(),
-      "type_2_color": type_2,
-      "display_second": display,
-      "dex_num": dex_num,
-      "prename": prename,
-      "second_check": second_check,
-      "genera": genera
-    };
-
-    if(error) {
-      variables = variables_error;
-    }
-
-    res.render("display", variables);
 });
 
 //------------------------------------------------------------------
@@ -875,7 +892,10 @@ function specialDay() {
 
 // app.get('/refresh', function routeHandler(req, res) {});
 
-console.log('Listening on 8888');
+const port = parseInt(process.env.PORT, 10) || 8888;
+
+console.log(`Listening on ${port}`);
+
 app.listen(process.env.PORT || 8888);
 
 
