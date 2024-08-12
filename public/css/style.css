@@ -149,8 +149,10 @@ meter {
 #login-credits {
   font-size: 1.7rem;
   font-weight: 800;
-  letter-spacing: 0.5rem;
+  letter-spacing: 0.3rem;
   text-align: center;
+  margin-top: 3.2rem;
+  margin-bottom: 3.2rem
 }
 
 #pokedex-background {
@@ -228,7 +230,7 @@ meter {
 .title-display {
   font-weight: 800;
   text-align: center;
-  letter-spacing: 1.3rem;
+  letter-spacing: 0.8rem;
   font-size: 4rem;
 }
 
