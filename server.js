@@ -112,6 +112,7 @@ app.get('/result/:id', async (req, res) => {
     //if these are undefined, just log in again.
     if(!spotifyApi.getAccessToken() || !spotifyApi.getAccessToken()) {
       res.redirect("/login")
+      return;
     }
 
     //variables_error is sent when there is an error
@@ -317,7 +318,7 @@ app.get('/result/:id', async (req, res) => {
           }
         }
   
-        // let test_name = "aron"
+        // let test_name = "gardevoir"
         // name = test_name
       }
   
@@ -341,6 +342,7 @@ app.get('/result/:id', async (req, res) => {
       } else if (name.toLowerCase() === "vulpix-alola") {
         species_name = "vulpix";
         official_name = "Alolan Vulpix";
+        prename = "an";
       }
   
       let species_link = "https://pokeapi.co/api/v2/pokemon-species/" + species_name;
@@ -552,6 +554,9 @@ function get_pokemon(avg_energy, avg_mood, type) {
         }
       } else {
         if (avg_mood > 0.8) { //E-, M+
+          if(avg_energy < 2.2) {
+            return "toxel";
+          }
           return "ekans";
         } else { //E-, M-
           return "stunky";
@@ -572,6 +577,9 @@ function get_pokemon(avg_energy, avg_mood, type) {
         }
       } else {
         if (avg_mood > 0.8) { //E-, M+
+          if(avg_energy < 2.2) {
+            return "flygon";
+          }
           return "dragonite";
         } else { //E-, M-
           return "kingdra";
@@ -588,6 +596,9 @@ function get_pokemon(avg_energy, avg_mood, type) {
         if (avg_mood > 0.8) { //E-, M+
           return "litwick";
         } else { //E-, M-
+          if(avg_mood < 0.3) {
+            return "lunala"
+          }
           return "drifblim";
         }
       }
@@ -648,7 +659,7 @@ function get_pokemon(avg_energy, avg_mood, type) {
           if(avg_mood < 1.075) {
             return "machop"
           }
-          return "meditite";
+          return "pancham";
         }
       }
     case "normal":
@@ -669,10 +680,10 @@ function get_pokemon(avg_energy, avg_mood, type) {
           if(avg_mood > 1.24) {
             return "teddiursa"
           }
-          return "bidoof";
+          return "wooloo";
         } else { //E-, M-
           if(avg_energy > 2) {
-            return "munchlax";
+            return "smeargle";
           }
           return "komala";
         }

@@ -45,19 +45,6 @@ a {
 }
 
 body {
-  /*
-    background: rgb(59,76,202);
-    background: radial-gradient(circle, rgba(59,76,202,1) 0%, rgba(148,187,233,1) 100%);  
-  */
-  /* background: rgb(59,76,202);
-  background: radial-gradient(circle, rgba(59,76,202,1) 0%, rgba(109,158,217,1) 100%);
-  background-repeat: no-repeat; 
-  background-position: center;
-  background-attachment: fixed;       
-  webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover; */
   background: rgb(59,76,202);
   background: linear-gradient(270deg, #3b4cca, #6d9ed9, #765fe0);
   background-size: 600% 600%;
@@ -66,18 +53,13 @@ body {
   -o-animation: bg-gradient 42s ease infinite;
   animation: bg-gradient 42s ease infinite;
   height: 100%;
-  width: 80%;
+  width: 90%;
   margin: auto;
 }
 
 img {
   margin-left: 2rem;
   width: 27.2rem;
-}
-
-meter {
-  border: none;
-  border-radius: 0px;
 }
 
 .fade-in { 
@@ -114,6 +96,7 @@ meter {
 
 #flavor {
   font-size: 2rem;
+  text-align: center;
 }
 
 #flavor-div {
@@ -193,7 +176,9 @@ meter {
   letter-spacing: 0.08rem;
   margin: auto;
   margin-top: 1.8rem;
-  border-radius: 1rem;
+  border: 0.2rem solid white;
+  border-radius: 3rem;
+  background: #1f5d90;
   padding-left: 1.1rem;
   padding-right: 0rem;
   padding-top: 1rem;
@@ -252,7 +237,7 @@ meter {
 }
 
 #name {
-  font-size: 4rem;
+  font-size: 3.9rem;
   font-weight: 600;
 }
 
@@ -376,7 +361,6 @@ meter {
   }
 
   #stat-bar {
-    border: solid 0.3rem rgba(109,211,245,0.6);
     height: 15.6rem;
     padding-left: 1.5rem;
     padding-right: 0.4rem;
@@ -392,6 +376,15 @@ meter {
     margin-left: 4rem;
   } */
 }
+
+meter::-webkit-meter-bar {
+  border: 0.5px solid white;
+  background: rgba(26, 74, 133, 0.5);
+}
+
+meter::-webkit-meter-optimum-value {background: #43cd45;}
+meter::-webkit-meter-suboptimum-value{background:#feac00;}
+meter::-webkit-meter-even-less-good-value{background:red;}
 
 /* @media screen and (max-width: 1167px) {
 
