@@ -4,6 +4,7 @@ const app = express();
 const path = require("path");
 const fetch = require("cross-fetch");
 const { response } = require('express');
+const typeDescriptions = require('./types.js')
 
 require("dotenv").config({ path: path.resolve(__dirname, 'credentials/.env') });
 
@@ -75,7 +76,11 @@ app.get('/callback', async (req, res) => {
       "dex_num": "649",
       "prename": "a",
       "second_check": "2",
-      "genera": "Paleozoic Pokemon"
+      "genera": "Paleozoic Pokemon",
+      "type_category": "bug",
+      "type_category_color": "BUG",
+      "first_insight": typeDescriptions["bug"][0],
+      "second_insight": typeDescriptions["bug"][1]
     };
 
     // console.log(code_str);
@@ -134,7 +139,11 @@ app.get('/result/:id', async (req, res) => {
       "dex_num": "649",
       "prename": "a",
       "second_check": "2",
-      "genera": "Paleozoic Pokemon"
+      "genera": "Paleozoic Pokemon",
+      "type_category": "bug",
+      "type_category_color": "BUG",
+      "first_insight": typeDescriptions["bug"][0],
+      "second_insight": typeDescriptions["bug"][1]
     };
 
     let error = false;
@@ -294,6 +303,16 @@ app.get('/result/:id', async (req, res) => {
       let avg_acoustic = count == 0 ? 0 : (short_acoustic + medium_acoustic + long_acoustic) / count;
       let type = "";
       let name = "";
+
+      //THIS IS SOLELY FOR RANDOM RESULTS (TESTING DIFF POKEMON)
+      // avg_mood = (Math.random() * 2)
+      // avg_energy = (Math.random() * 1.7)
+      // avg_acoustic = (Math.random() * 0.7)
+
+      // avg_mood = 2.4;
+      // avg_energy = 1.3;
+      // avg_acoustic = 0.7;
+
   
       if((avg_mood + avg_energy + avg_acoustic) == 0) {
         name = "ditto"
@@ -318,7 +337,7 @@ app.get('/result/:id', async (req, res) => {
           }
         }
   
-        // let test_name = "gardevoir"
+        // let test_name = "geodude"
         // name = test_name
       }
   
@@ -426,7 +445,11 @@ app.get('/result/:id', async (req, res) => {
         "dex_num": dex_num,
         "prename": prename,
         "second_check": second_check,
-        "genera": genera
+        "genera": genera,
+        "type_category": type,
+        "type_category_color": type.toUpperCase(),
+        "first_insight": typeDescriptions[type][0],
+        "second_insight": typeDescriptions[type][1]
       };
   
       if(error) {

@@ -219,6 +219,30 @@ img {
   text-align: center;
 }
 
+#type-in-text {
+  border: solid;
+  border-radius: 1rem;
+  letter-spacing: 0.2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+
+#type-insight {
+  text-align: center;
+  border-top: 0.2rem solid white;
+  border-bottom: 0.2rem solid white;
+  border-left: 1rem solid white;
+  border-right: 1rem solid white;
+  border-radius: 1rem;
+  padding: 1.2rem;
+  margin-top: 0.9rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.7rem;
+  text-shadow: 0 0 2px #000000, 0 0 3px #000;
+}
+
 #title-caption {
   font-size: 3rem;
 }
