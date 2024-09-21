@@ -178,7 +178,7 @@ app.get('/result/:id', async (req, res) => {
     //any random uncaught errors will be caught by this overarching try catch block
     try {
       try {
-        short_response = await spotifyApi.getMyTopTracks({time_range : "short_term", limit: 40});
+        short_response = await spotifyApi.getMyTopTracks({time_range : "short_term", limit: 50});
         count += 1
       } catch (e) {
         console.log("ERROR GETTING SHORT RESPONSE");
@@ -186,7 +186,7 @@ app.get('/result/:id', async (req, res) => {
       }
   
       try {
-        medium_response = await spotifyApi.getMyTopTracks({time_range : "medium_term", limit: 50});
+        medium_response = await spotifyApi.getMyTopTracks({time_range : "medium_term", limit: 40});
         count += 1
       } catch (e) {
         console.log("ERROR GETTING MEDIUM RESPONSE");
@@ -194,7 +194,7 @@ app.get('/result/:id', async (req, res) => {
       }
   
       try {
-        long_response = await spotifyApi.getMyTopTracks({time_range : "long_term", limit: 40});
+        long_response = await spotifyApi.getMyTopTracks({time_range : "long_term", limit: 30});
         count += 1
       } catch (e) {
         console.log("ERROR GETTING LONG RESPONSE");
