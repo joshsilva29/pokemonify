@@ -248,7 +248,9 @@ function get_type(avg_mood, avg_energy, avg_acoustic) {
         if (avg_energy > 2.1) {
           if (avg_mood > 1.15) { //E+, M+
             if(avg_mood > 1.22) {
-              return "horsea"
+              return "horsea";
+            } else if(avg_mood > 1.18 && avg_mood <= 1.22) {
+              return "mudkip";
             }
             return "squirtle";
           } else { //E+, M-
