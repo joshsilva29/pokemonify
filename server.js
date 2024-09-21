@@ -363,8 +363,8 @@ app.get('/result/:id', async (req, res) => {
           }
         }
   
-        let test_name = "mudkip"
-        name = test_name
+        // let test_name = "mudkip"
+        // name = test_name
       }
   
       // console.log("here at least");
