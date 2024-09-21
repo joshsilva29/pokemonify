@@ -7,7 +7,27 @@ const { response } = require('express');
 const typeDescriptions = require('./types.js')
 const { get_type, get_pokemon } = require('./assign');
 
+// import firebase shtuff
+const { initializeApp } = require('firebase/app');
+const { collection, addDoc, increment, getFirestore, doc, updateDoc, setDoc, getDoc } = require('firebase/firestore');
+
 require("dotenv").config({ path: path.resolve(__dirname, 'credentials/.env') });
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBu18TWlZ0fg1DjV-ZBDaueSVG9RllJ_mU",
+  authDomain: "pokemonify-dc314.firebaseapp.com",
+  projectId: "pokemonify-dc314",
+  storageBucket: "pokemonify-dc314.appspot.com",
+  messagingSenderId: "852471308024",
+  appId: "1:852471308024:web:5a1a2c01aa97d155f3a50d",
+  measurementId: "G-K5K3WLTTMK"
+};
+
+// firebase initialization and firestore reference
+const firebase_app = initializeApp(firebaseConfig);
+const db = getFirestore(firebase_app);
 
 var spotifyApi = new SpotifyWebApi({
     clientId: process.env.CLIENT_ID,
@@ -343,7 +363,7 @@ app.get('/result/:id', async (req, res) => {
           }
         }
   
-        // let test_name = "sobble"
+        // let test_name = "rapidash"
         // name = test_name
       }
   
@@ -432,8 +452,28 @@ app.get('/result/:id', async (req, res) => {
             }
           }
         }
-        // console.log(genera)
+        
         genera = species.genera[7]["genus"]
+
+        //record result
+
+        const docRef = doc(db, "pokedatabase", species_name);
+        const docSnapshot = await getDoc(docRef);
+
+        if (!docSnapshot.exists()) {
+          await setDoc(docRef, {
+            count: 1,
+          });
+        } else {
+          try {
+            await updateDoc(docRef, {
+              count: increment(1)
+            });
+          } catch (e) {
+            console.error("Error adding document: ", e);
+          }
+        }
+
       }
   
       let variables = {
