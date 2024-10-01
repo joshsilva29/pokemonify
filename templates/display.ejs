@@ -4,65 +4,90 @@
         <link href="/css/style.css" rel="stylesheet" type="text/css">
         <link rel="preload" href="<%= artwork %>" as="image">
         <title>Pokémonify -- What Pokémon are you based on your listening history?</title>
+        <script src="https://unpkg.com/modern-screenshot"></script>
+        <script>
+            function screenshot() {
+                modernScreenshot.domToPng(document.documentElement).then(dataUrl => {
+                    const link = document.createElement('a')
+                    link.download = 'pokemonify.png'
+                    link.href = dataUrl
+                    link.click()
+                }) 
+            }
+        </script>
     </head>
-    <body>
-        <a href="/">
-            <h1 class="title-display fade-in">POKÉMONIFY</h1>
-        </a>
-        <div id="pokedex-background" class="fade-in">
-            <br>
-            <div id="left-pokedex">
-                <div id="upper-left">
-                    <div>
-                        <br>
-                        <div id ="you-are">You are <%= prename %></div>
-                        <br>
-                        <div id="name"><%= name %></div>
-                        <br>
-                        <div id="dex-num">No. <%= dex_num %></div>
-                        <br>
-                        <div id="genera-div">
-                            <div id="genera"><%= genera %></div>
-                        </div>
-                        <br>
-                        <div id="type" class="<%= type_color%>"><%= type %></div>
-                        <br>
-                        <div id="type-<%= second_check%>" class="<%= type_2_color%>"><%= type_2%></div>
-                    </div> 
-                    <img id="my_img" src="<%= artwork %>" alt="">
+    <body id="display-body">
+        <div id="main">
+            <a href="/">
+                <h1 class="title-display fade-in">POKÉMONIFY</h1>
+            </a>
+            <div id="pokedex-background" class="fade-in">
+                <br>
+                <div id="left-pokedex">
+                    <div id="upper-left">
+                        <div>
+                            <br>
+                            <div id ="you-are">You are <%= prename %></div>
+                            <br>
+                            <div id="name"><%= name %></div>
+                            <br>
+                            <div id="dex-num">No. <%= dex_num %></div>
+                            <br>
+                            <div id="genera-div">
+                                <div id="genera"><%= genera %></div>
+                            </div>
+                            <br>
+                            <div id="type" class="<%= type_color%>"><%= type %></div>
+                            <br>
+                            <div id="type-<%= second_check%>" class="<%= type_2_color%>"><%= type_2%></div>
+                        </div> 
+                        <img id="my_img" src="<%= artwork %>" alt="" crossOrigin="anonymous">
+                    </div>
+                    <div id="right-pokedex">
+                        <fieldset id="stat-bar">
+                            <legend id="stats-legend">Stats</legend>
+                            <div id="mood-stat" class="stat">
+                              <h3 class="id-label">Mood</h3>
+                              <meter id="mood" min="0" low="0.4" high="1" max="2" optimum="1.5" value="<%= mood %>"></meter>
+                            </div>
+                            <div id="energy-stat" class="stat">
+                              <h3 class="id-label">Energy</h3>
+                              <meter id="energy" min="0" low="0.6" high="1.5" max="3" optimum="2.5" value="<%= energy %>"></meter>
+                            </div>
+                            <!-- <div id="acoustic-stat" class="stat">
+                              <h3 class="id-label">Acoustic</h3>
+                              <meter id="acoustic" min="0" low="0.2" high="0.5" max="1" optimum="0.7" value="<%= acoustic %>"></meter>
+                            </div> -->
+                        </fieldset>
+                    </div>
                 </div>
-                <div id="right-pokedex">
-                    <fieldset id="stat-bar">
-                        <legend id="stats-legend">Stats</legend>
-                        <div id="mood-stat" class="stat">
-                          <h3 class="id-label">Mood</h3>
-                          <meter id="mood" min="0" low="0.4" high="1" max="2" optimum="1.5" value="<%= mood %>"></meter>
-                        </div>
-                        <div id="energy-stat" class="stat">
-                          <h3 class="id-label">Energy</h3>
-                          <meter id="energy" min="0" low="0.6" high="1.5" max="3" optimum="2.5" value="<%= energy %>"></meter>
-                        </div>
-                        <!-- <div id="acoustic-stat" class="stat">
-                          <h3 class="id-label">Acoustic</h3>
-                          <meter id="acoustic" min="0" low="0.2" high="0.5" max="1" optimum="0.7" value="<%= acoustic %>"></meter>
-                        </div> -->
-                    </fieldset>
+                <div id="flavor-div">
+                    <div id="flavor"><%= flavor %></div>
                 </div>
-            </div>
-            <div id="flavor-div">
-                <div id="flavor"><%= flavor %></div>
-            </div>
-            <br>
-            <div id="type-insight" class="<%= type_category%>">
-                <%= first_insight%><span id="type-in-text" class="<%= type_category%>"><%= type_category_color %></span>type, <%= second_insight%>.
+                <br>
+                <div id="type-insight" class="<%= type_category%>">
+                    <%= first_insight%><span id="type-in-text" class="<%= type_category%>"><%= type_category_color %></span>type, <%= second_insight%>.
+                </div>
+                <br>
+                <div class="centered">
+                    <div id="download"  onclick="screenshot()">
+                        <img id="download-button" src="/images/pokedownload.png"/>
+                        <div class="center-vertically" id="save-result">SAVE RESULT</div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="fade-in" id="login-credits">
+    </body>
+    <div id="footer">
+        <div class="fade-in" id="link-name">
+            POKEMONIFY.ONRENDER.COM
+        </div>
+        <div class="fade-in" id="display-credits">
             <h4>Made by <a id ="linkedin" href="https://www.linkedin.com/in/joshua-silva-359756177/">Joshua Silva</a></h4>
         </div>
         <div class="fade-in info">
             <h6 id="disclaimer">Disclaimer: This website is not affiliated with, endorsed, sponsored, or specifically approved by Nintendo, The Pokémon Company, or any other related entities. <br>Pokémon and all associated names, images, and trademarks are the property of their respective owners.</h6>
             <br><br><br>
-          </div>
-    </body>
+        </div>
+    </div>
 </html>

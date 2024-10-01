@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 @keyframes fadeIn {
   0% { opacity: 0; }
@@ -55,6 +56,35 @@ body {
   height: 100%;
   width: 90%;
   margin: auto;
+}
+
+.center-vertically {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+}
+
+#display-body {
+  width: 100%
+}
+
+#main {
+  background: rgb(59,76,202);
+  background: linear-gradient(270deg, #3b4cca, #6d9ed9, #765fe0);
+  background-size: 600% 600%;
+  -webkit-animation: bg-gradient 42s ease infinite;
+  -moz-animation: bg-gradient 42s ease infinite;
+  -o-animation: bg-gradient 42s ease infinite;
+  animation: bg-gradient 42s ease infinite;
+  height: 100%;
+  width: 90%;
+  margin: auto;
+  padding-top: 2.9rem;
 }
 
 img {
@@ -120,6 +150,13 @@ img {
   margin: auto;
 }
 
+#link-name {
+  text-align: center;
+  font-family: "Press Start 2P", 'Figtree', sans-serif;
+  margin-top: 2.7rem;
+  margin-bottom: 0.6rem;
+}
+
 #linkedin {
   color: orange
 }
@@ -150,6 +187,37 @@ img {
   margin-bottom: 3.2rem
 }
 
+#display-credits {
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: 0.3rem;
+  text-align: center;
+  margin-bottom: 2.8rem;
+}
+
+#download {
+  display: flex;
+  justify-content: center;
+  background-color: #765fe0;
+  width: 16rem;
+  border-radius: 1rem;
+  padding-right: 0.7rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  border-top: 0.1rem solid white;
+  border-bottom: 0.1rem solid white;
+  border-left: 0.1rem solid white;
+  border-right: 0.1rem solid white;
+  cursor: pointer;
+}
+
+#download-button {
+  height: 3rem;
+  width: 3rem;
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
 #pokedex-background {
   background: rgb(37,113,156);
   background: linear-gradient(0deg, rgba(37,113,156,1) 0%, rgba(25,71,131,1) 100%);
@@ -169,6 +237,10 @@ img {
   display: flex;
   flex-direction: row;
   margin-left: 3.8rem;
+}
+
+#save-result {
+  font-size: 1.6rem;
 }
 
 #stat-bar {
@@ -253,6 +325,7 @@ img {
   text-align: center;
   letter-spacing: 0.8rem;
   font-size: 4rem;
+  margin-top: 0
 }
 
 #upper-left {
@@ -395,6 +468,10 @@ img {
 
   #stats-legend {
     font-size: 2.5rem;
+  }
+
+  #link-name {
+    font-size: 1.4rem;
   }
 
   /* #upper-left {
