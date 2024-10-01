@@ -458,22 +458,22 @@ app.get('/result/:id', async (req, res) => {
 
         //record result
 
-        // const docRef = doc(db, "pokedatabase", species_name);
-        // const docSnapshot = await getDoc(docRef);
+        const docRef = doc(db, "pokedatabase", species_name);
+        const docSnapshot = await getDoc(docRef);
 
-        // if (!docSnapshot.exists()) {
-        //   await setDoc(docRef, {
-        //     count: 1,
-        //   });
-        // } else {
-        //   try {
-        //     await updateDoc(docRef, {
-        //       count: increment(1)
-        //     });
-        //   } catch (e) {
-        //     console.error("Error adding document: ", e);
-        //   }
-        // }
+        if (!docSnapshot.exists()) {
+          await setDoc(docRef, {
+            count: 1,
+          });
+        } else {
+          try {
+            await updateDoc(docRef, {
+              count: increment(1)
+            });
+          } catch (e) {
+            console.error("Error adding document: ", e);
+          }
+        }
 
       }
   
