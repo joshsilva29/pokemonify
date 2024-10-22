@@ -464,11 +464,13 @@ app.get('/result/:id', async (req, res) => {
         if (!docSnapshot.exists()) {
           await setDoc(docRef, {
             count: 1,
+            access: "valid"
           });
         } else {
           try {
             await updateDoc(docRef, {
-              count: increment(1)
+              count: increment(1),
+              access: "valid"
             });
           } catch (e) {
             console.error("Error adding document: ", e);
