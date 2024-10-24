@@ -32,8 +32,8 @@ const db = getFirestore(firebase_app);
 var spotifyApi = new SpotifyWebApi({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    redirectUri: 'https://pokemonify.onrender.com/callback'
-    // redirectUri: 'http://localhost:8888/callback'
+    // redirectUri: 'https://pokemonify.onrender.com/callback'
+    redirectUri: 'http://localhost:8888/callback'
   });
 
 // 'http://localhost:8888/callback'
@@ -456,26 +456,25 @@ app.get('/result/:id', async (req, res) => {
         
         genera = species.genera[7]["genus"]
 
-        //record result
+        // record result
 
-        const docRef = doc(db, "pokedatabase", species_name);
-        const docSnapshot = await getDoc(docRef);
-
-        if (!docSnapshot.exists()) {
-          await setDoc(docRef, {
-            count: 1,
-            access: "valid"
-          });
-        } else {
-          try {
-            await updateDoc(docRef, {
-              count: increment(1),
-              access: "valid"
-            });
-          } catch (e) {
-            console.error("Error adding document: ", e);
-          }
-        }
+        // try {
+        //   const docRef = doc(db, "pokedatabase", species_name);
+        //   const docSnapshot = await getDoc(docRef);
+        //   if (!docSnapshot.exists()) {
+        //       await setDoc(docRef, {
+        //         count: 1,
+        //         access: "valid"
+        //       });
+        //   } else {
+        //       await updateDoc(docRef, {
+        //         count: increment(1),
+        //         access: "valid"
+        //       });
+        //   }
+        // } catch (e) {
+        //   console.error("firebase error: ", e)
+        // }
 
       }
   
