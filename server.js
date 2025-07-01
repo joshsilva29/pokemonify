@@ -13,18 +13,6 @@ const { collection, addDoc, increment, getFirestore, doc, updateDoc, setDoc, get
 
 require("dotenv").config({ path: path.resolve(__dirname, 'credentials/.env') });
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBu18TWlZ0fg1DjV-ZBDaueSVG9RllJ_mU",
-  authDomain: "pokemonify-dc314.firebaseapp.com",
-  projectId: "pokemonify-dc314",
-  storageBucket: "pokemonify-dc314.appspot.com",
-  messagingSenderId: "852471308024",
-  appId: "1:852471308024:web:5a1a2c01aa97d155f3a50d",
-  measurementId: "G-K5K3WLTTMK"
-};
-
 // firebase initialization and firestore reference
 const firebase_app = initializeApp(firebaseConfig);
 const db = getFirestore(firebase_app);
@@ -35,10 +23,6 @@ var spotifyApi = new SpotifyWebApi({
     redirectUri: 'https://pokemonify.onrender.com/callback'
     // redirectUri: 'http://localhost:8888/callback'
   });
-
-// 'http://localhost:8888/callback'
-// https://pokemon-spotify.herokuapp.com/callback
-// https://pokemonify.onrender.com/callback
 
 app.set("views", path.resolve(__dirname, "templates"));
 app.set("view engine", "ejs");
